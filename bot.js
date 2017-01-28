@@ -1,9 +1,8 @@
-var
-  twit = require('twit'),
-  config = require('./config'),
-  uniqueRandomArray = require('unique-random-array');
+var twit = require('twit')
+var config = require('./config')
+var uniqueRandomArray = require('unique-random-array')
 
-var Twitter = new twit(config);
+var Twitter = new twit(config)
 
 // 
 //  search twitter for all tweets containing the word 'banana' since July 11, 2011 
@@ -26,37 +25,14 @@ var Twitter = new twit(config);
 // promise API, or both at the same time. 
 // 
 
-var selfId = function() {
-
+var selfId = function () {
   Twitter.get('account/verify_credentials', {
       skip_status: true
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log('caught error', err.stack);
     })
-
-  .then(function(result) {
-    // `result` is an Object with keys "data" and "resp". 
-    // `data` and `resp` are the same objects as the ones passed 
-    // to the callback. 
-    // See https://github.com/ttezel/twit#tgetpath-params-callback 
-    // for details.
-    // console.log(result.data.id_str);
-    return result.data.id_str;
-  });
-
-
-};
-
-
-function fetchSelfId(callback) {
-    Twitter.get('account/verify_credentials', {
-        skip_status: true
-      })
-      .catch(function(err) {
-        console.log('caught error', err.stack);
-      })
-    .then(function(result) {
+    .then(function (result) {
       // `result` is an Object with keys "data" and "resp". 
       // `data` and `resp` are the same objects as the ones passed 
       // to the callback. 
@@ -64,12 +40,31 @@ function fetchSelfId(callback) {
       // for details.
       // console.log(result.data.id_str);
       return result.data.id_str;
-    });
+    })
+}
+
+
+function fetchSelfId(callback) {
+  Twitter.get('account/verify_credentials', {
+      skip_status: true
+    })
+    .catch(function (err) {
+      console.log('caught error', err.stack);
+    })
+    .then(function (result) {
+      // `result` is an Object with keys "data" and "resp". 
+      // `data` and `resp` are the same objects as the ones passed 
+      // to the callback. 
+      // See https://github.com/ttezel/twit#tgetpath-params-callback 
+      // for details.
+      // console.log(result.data.id_str);
+      return result.data.id_str;
+    })
 }
 
 function getSelfId() {
-  fetchSelfId( function (id) {
-      return id
+  fetchSelfId(function (id) {
+    return id
   })
 }
 

@@ -4,12 +4,12 @@
   "description": "tweet-bot-playground",
   "main": "bot.js",
   "scripts": {
-    "start": "node bot.js"
+    "start": "node index.js"
   },
   "author": "Scott Spence",
   "license": "MIT",
   "dependencies": {
-     "forismatic-node": "^1.1.4",
+    "forismatic-node": "^1.1.4",
     "sparkai": "^0.1.2",
     "twit": "^2.2.5",
     "unique-random-array": "^1.0.0",
