@@ -9,6 +9,7 @@
   - [Post Statuses](#post-statuses)
   - [Work with users](#work-with-users)
   - [Interact with tweets](#interact-with-tweets)
+  - [Use Twitter search](#use-twitter-search)
 
 <!-- /TOC -->
 
@@ -225,7 +226,126 @@ bot.post('statuses/retweet/:id', {
   if (err) {
     console.log(err)
   } else {
-    console.log(data)
+    console.log(data.text + ' retweet success!')
   }
 })
 ```
+
+To unretweet just use `.post('statuses/unretweet/:id'...` 
+
+```javascript
+bot.post('statuses/unretweet/:id', {
+  id: '860828247944253440'
+}, function (err, data, response) {
+  if (err) {
+    console.log(err)
+  } else {
+    console.log(data.text + ' unretweet success!')
+  }
+})
+```
+
+To like a tweet use `.post('favorites/create'...` 
+
+```javascript
+bot.post('favorites/create', {
+  id: '860897020726435840'
+}, function (err, data, response) {
+  if (err) {
+    console.log(err)
+  } else {
+    console.log(data.text + ' tweet liked!')
+  }
+})
+```
+
+To unlike a post use `.post('favorites/destroy'...`
+
+```javascript
+bot.post('favorites/destroy', {
+  id: '860897020726435840'
+  
+}, function (err, data, response) {
+  if (err) {
+    console.log(err)
+  } else {
+    console.log(data.text + ' tweet unliked!')
+  }
+})
+```
+
+To reply to a tweet is much the same a posting a tweet but you need to include the `in_reply_to_status_id` parameter, but that's not enough as you will also need to put in the screen name of the person you are replying to.
+
+```javascript
+bot.post('statuses/update', {
+  status: '@ScottDevTweets I reply to you yes!',
+  in_reply_to_status_id: '860900406381211649'
+}, function (err, data, response) {
+  if (err) {
+    console.log(err)
+  } else {
+    console.log(data.text + ' tweeted!')
+  }
+})
+```
+
+Finally if you want to delete a tweet use `.post('statuses/destroy/:id'...` passing the tweet id you want to delete.
+
+```javascript
+bot.post('statuses/destroy/:id', {
+  id: '860900437993676801'
+}, function (err, data, response) {
+  if (err) {
+    console.log(err)
+  } else {
+    console.log(data.text + ' tweet deleted!')
+  }
+})
+```
+
+## Use Twitter search
+
+To use search use `.get('search/tweets',...` there are quite a few search parameters for search.
+
+`q: ''` the Q is for query so to search for mango use `q: 'mango'` we can also limit the results returned with `count: n` so let limit it the count to 5 see the example:
+
+```javascript
+bot.get('search/tweets', {
+  q: 'mango',
+  count: 5
+}, function (err, data, response) {
+  if (err) {
+    console.log(err)
+  } else {
+    console.log(data.statuses)
+  }
+})
+```
+
+Like with the time line we can pull out specific items from the `data.statuses` returned, like this:
+
+```javascript
+bot.get('search/tweets', {
+  q: 'mango',
+  count: 5
+}, function (err, data, response) {
+  if (err) {
+    console.log(err)
+  } else {
+    data.statuses.forEach(function(s){
+      console.log(s.text)
+      console.log(s.user.screen_name)
+      console.log('\n')
+    })
+  }
+})
+```
+
+The search API returns for relevance and not completeness, if you want to search for an exact phrase you'll need to wrap the query in quotes `"purple pancakes"` if you want to search for one of two words then use `OR` like `'tabs OR spaces'`.
+
+If you want to search for a tweet without another word use `-` like `donald -trump` you can use it multiple times as well, like `donald -trump -duck`
+
+You can search for tweets wtih emoticons, like `q: 'sad :('` try it!
+
+Of course look for hashtags `q: '#towie'`. Look for tweets to a user `q: 'to:@stephenfry'` or from a user `q: 'from:@stephenfry'`
+

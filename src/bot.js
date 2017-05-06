@@ -21,15 +21,19 @@ function getBotTimeline() {
   })
 }
 
-// getBotTimeline()
+getBotTimeline()
 
-bot.post('statuses/retweet/:id', {
-  id: '860828247944253440'
+bot.get('search/tweets', {
+  q: 'sad :(',
+  count: 5
 }, function (err, data, response) {
   if (err) {
     console.log(err)
   } else {
-    console.log(data)
+    data.statuses.forEach(function(s){
+      console.log(s.text)
+      console.log(s.user.screen_name)
+      console.log('\n')
+    })
   }
 })
-
