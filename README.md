@@ -1,14 +1,46 @@
 # Twitter bot playground
 
-This is a reference for me and anyone else that's interested in Twitter bots in JavaScript
+<details>
+  <summary>TOC</summary>
 
-I'm using the `twit`  npm package there are others out there to use
+<!-- TOC -->
 
-So if you don't know how to use node or have your environment set up to use it take a look at the README.md on my Twitter bot bootstrap which details getting a Twitter application set up and a development environment with c9
+- [Twitter bot playground](#twitter-bot-playground)
+  - [Post Statuses](#post-statuses)
+  - [Work with users](#work-with-users)
+  - [Interact with tweets](#interact-with-tweets)
+
+<!-- /TOC -->
+
+</details>
+
+This is a reference for me and anyone else that's interested in Twitter bots in JavaScript.
+
+I'm using the `twit`  npm package there are others out there to use.
+
+So if you don't know how to use node or have your environment set up to use it take a look at the README.md on my Twitter bot bootstrap which details getting a Twitter application set up and a development environment with c9.
 
 A lot of this information is already out there so this may be repeating stuff that is elsewhere I'm doing this for my learning.
 
-Once you have your bot set up you can use the following 
+Once you have your bot set up you can use the following.
+
+## Post Statuses
+
+Firstly post statuses, with `.post('statuses/update'...` 
+
+```javascript
+bot.post('statuses/update', {
+  status: 'hello world!'
+}, function (err, data, response) {
+  if (err) {
+    console.log(err)
+  } else {
+    console.log(data.text + ' tweeted!')
+  }
+})
+```
+
+## Work with users
 
 To get a list of followers ids use `.get('followers/ids'...`
 
@@ -58,7 +90,7 @@ bot.post('friendships/create', {
 })
 ```
 
-Like with followers you can get a list of accounts that your bot is followingback
+Like with followers you can get a list of accounts that your bot is following back.
 
 ```javascript
 bot.get('friends/ids', {
@@ -87,6 +119,8 @@ bot.get('friends/list', {
 ```
 
 Get friendship status this is useful for following new followers, this will give us the relation of a specific user
+
+Run through your followers list and follow back any users that do not have the `following` connection.
 
 ```javascript
 bot.get('friendships/lookup', {
@@ -147,5 +181,51 @@ bot.post('direct_messages/new', {
 })
 ```
 
+## Interact with tweets
 
+To get a list of tweets in the bot time line use `.get(statuses/home_timeline'...`
 
+```javascript
+bot.get('statuses/home_timeline', {
+  count: 1
+}, function (err, data, response) {
+  if (err) {
+    console.log(err)
+  } else {
+    console.log(data)
+  }
+})
+```
+
+To be more granular you can pull out specific information on each tweet.
+
+```javascript
+bot.get('statuses/home_timeline', {
+  count: 5
+}, function (err, data, response) {
+  if (err) {
+    console.log(err)
+  } else {
+    data.forEach(function(t){
+      console.log(t.text)
+      console.log(t.user.screen_name)
+      console.log(t.id_str)
+      console.log('\n')
+    })
+  }
+})
+```
+
+To retweet use `.post('statuses/retweet/:id'...` and pass in a tweet id to retweet.
+
+```javascript
+bot.post('statuses/retweet/:id', {
+  id: '860828247944253440'
+}, function (err, data, response) {
+  if (err) {
+    console.log(err)
+  } else {
+    console.log(data)
+  }
+})
+```
