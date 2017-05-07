@@ -24,13 +24,14 @@ function getBotTimeline() {
 getBotTimeline()
 
 bot.get('search/tweets', {
-  q: 'sad :(',
+  q: 'bacon',
+  geocode: '51.5033640,-0.1276250,1mi',
   count: 5
 }, function (err, data, response) {
   if (err) {
     console.log(err)
   } else {
-    data.statuses.forEach(function(s){
+    data.statuses.forEach(function (s) {
       console.log(s.text)
       console.log(s.user.screen_name)
       console.log('\n')
