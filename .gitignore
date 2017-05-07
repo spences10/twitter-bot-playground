@@ -38,3 +38,7 @@ jspm_packages
 
 # env files
 .env
+
+*.jpg
+
+*.csv
