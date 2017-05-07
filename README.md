@@ -12,6 +12,7 @@
   - [Use Twitter search](#use-twitter-search)
   - [Use Twitter Stream API](#use-twitter-stream-api)
   - [Tweet media files](#tweet-media-files)
+  - [Make a Markov bot](#make-a-markov-bot)
 
 <!-- /TOC -->
 
@@ -42,6 +43,8 @@ bot.post('statuses/update', {
   }
 })
 ```
+
+[Back to top.](#twitter-bot-playground)
 
 ## Work with users
 
@@ -184,6 +187,8 @@ bot.post('direct_messages/new', {
 })
 ```
 
+[Back to top.](#twitter-bot-playground)
+
 ## Interact with tweets
 
 To get a list of tweets in the bot time line use `.get(statuses/home_timeline'...`
@@ -305,6 +310,8 @@ bot.post('statuses/destroy/:id', {
 })
 ```
 
+[Back to top.](#twitter-bot-playground)
+
 ## Use Twitter search
 
 To use search use `.get('search/tweets',...` there are quite a few search parameters for search.
@@ -394,6 +401,8 @@ bot.get('search/tweets', {
 })
 ```
 
+[Back to top.](#twitter-bot-playground)
+
 ## Use Twitter Stream API
 
 There are two ways to use the Stream API first there's `.stream('statuses/sample')` example:
@@ -445,6 +454,8 @@ stream.on('tweet', function (t) {
   console.log(t.text + '\n')
 })
 ```
+
+[Back to top.](#twitter-bot-playground)
 
 ## Tweet media files
 
@@ -645,10 +656,107 @@ function postStatus(params) {
 getPhoto()
 ```
 
+[Back to top.](#twitter-bot-playground)
 
+## Make a Markov bot
+
+This is pretty neat, again from the [egghead.io][egghead-markov] series it uses [`rita`][rita-npm] natural language toolkit. It also uses `csv-parse` as we're going to be reading out Twitter archive to make the bot sound like me tweeting.
+
+First of all set up the Twitter archive, you'll need to request yours from the Twitter settings page for yours.
+
+Use `fs` to set up a read stream...
+
+```javascript
+var filePath = path.join(__dirname, '../twitter-archive/tweets.csv')
+
+var tweetData =
+  fs.createReadStream(filePath)
+  .pipe(csvparse({
+    delimiter: ','
+  }))
+  .on('data', function (row) {
+    console.log(row[5])
+  })
+```
+
+When you run this from the console you should get the output from your Twitter archive.
+
+Now clear out things like `@` and `RT` to help with the natural language processing we'll set up two functions `cleanText` and `hasNoStopWords` 
+
+`cleanText` will tokenize the text delimiting it on space `' '` filter out the stop words then `.join(' ')` back together with a space and `.trim()` any whitespace that may be at the start of the text.
+
+```javascript
+function cleanText(text) {
+  return rita.RiTa.tokenize(text, ' ')
+    .filter(hasNoStopWords)
+    .join(' ')
+    .trim()
+}
+```
+
+The tokenized text can then be fed into the `hasNoStopWords` function to be sanitized for use in `tweetData`
+
+```javascript
+function hasNoStopWords(token) {
+  var stopwords = ['@', 'http', 'RT']
+  return stopwords.every(function(sw){
+    return !token.includes(sw)
+  })
+}
+```
+
+Now that we have the data cleaned we can tweet it, so replace `console.log(row[5])` with `inputText = inputText + ' ' + cleanText(row[5])` then we can use `rita.RiMarkov(3)` the 3 being the number of words to take into consideration. Then use `markov.generateSentences(1)` with 1 being the number of sentences being generated.
+
+```javascript
+var tweetData =
+  fs.createReadStream(filePath)
+  .pipe(csvparse({
+    delimiter: ','
+  }))
+  .on('data', function (row) {
+    inputText = inputText + ' ' + cleanText(row[5])
+  })
+  .on('end', function(){
+    var markov = new rita.RiMarkov(3)
+    markov.loadText(inputText)
+    var sentence = markov.generateSentences(1)
+  }
+```
+
+Now we can tweet this with the bot using `.post('statuses/update'...` passing in the `sentence` variable as the `status` loggin out when there is a tweet.
+
+```javascript
+var tweetData =
+  fs.createReadStream(filePath)
+  .pipe(csvparse({
+    delimiter: ','
+  }))
+  .on('data', function (row) {
+    inputText = inputText + ' ' + cleanText(row[5])
+  })
+  .on('end', function () {
+    var markov = new rita.RiMarkov(3)
+    markov.loadText(inputText)
+    var sentence = markov.generateSentences(1)
+    bot.post('statuses/update', {
+      status: sentence
+    }, function (err, data, response) {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log('Markov status tweeted!')
+      }
+    })
+  })
+```
+
+If you want your sentences to be closer to the input text you can increase the words to consider in `rita.RiMarkov(6)` and if you want to make it gibberish then lower the number.
+
+[Back to top.](#twitter-bot-playground)
 
 [egghead-media-files]: https://egghead.io/lessons/node-js-tweet-media-files-with-twit-js
 [hannah-davis]: https://egghead.io/instructors/hannah-davis
 [nasa-iotd]: https://www.nasa.gov/multimedia/imagegallery/iotd.html
 [api-apply]: https://api.nasa.gov/index.html#apply-for-an-api-key
-
+[egghead-markov]: https://egghead.io/lessons/node-js-make-a-bot-that-sounds-like-you-with-rita-js?series=create-your-own-twitter-bots
+[rita-npm]: https://www.npmjs.com/package/rita
