@@ -11,6 +11,7 @@
   - [Interact with tweets](#interact-with-tweets)
   - [Use Twitter search](#use-twitter-search)
   - [Use Twitter Stream API](#use-twitter-stream-api)
+  - [Tweet media files](#tweet-media-files)
 
 <!-- /TOC -->
 
@@ -445,5 +446,209 @@ stream.on('tweet', function (t) {
 })
 ```
 
+## Tweet media files
 
+This [egghead.io][egghead-media-files] video is a great resource for this section thanks to [Hannah Davis][hannah-davis] for the awesome content!
+
+This will be a request to get the [NASA image of the day][nasa-iotd] and tweet it.
+
+For this we will need references to `request` and `fs` for working with the file system.
+
+```javascript
+var Twit = require('twit')
+var request = require('request')
+var fs = require('fs')
+var config = require('./config')
+
+var bot = new Twit(config)
+```
+
+First up get the photo from the NASA api, for this we will need to create a parameter object inside our `getPhoto` function that will be passed to the node HTTP client `request` for the image:
+
+```javascript
+function getPhoto() {
+  var parameters = {
+    url: 'https://api.nasa.gov/planetary/apod',
+    qs: {
+      api_key: process.env.NASA_KEY
+    },
+    encoding: 'binary'
+  }
+}
+```
+
+The `parameters` specify an `api_key` for this you can [apply for an API key][api-apply] or you can use the `DEMO_KEY` this API key can be used for initially exploring APIs prior to signing up, but it has much lower rate limits, so you’re encouraged to signup for your own API key.
+
+In th example you can see that I have configured my key with the rest of my `.env` variables.
+
+Now to use the `request` to get the image:
+
+```javascript
+function getPhoto() {
+  var parameters = {
+    url: 'https://api.nasa.gov/planetary/apod',
+    qs: {
+      api_key: process.env.NASA_KEY
+    },
+    encoding: 'binary'
+  }
+  request.get(parameters, function (err, respone, body) {
+    body = JSON.parse(body)
+    saveFile(body, 'nasa.jpg')
+  })
+}
+```
+
+In the `request` we pass in our parameters and parse the body as JOSN so we can save it with the `saveFile` function which we'll go over now:
+
+```javascript
+function saveFile(body, fileName) {
+  var file = fs.createWriteStream(fileName)
+  request(body).pipe(file).on('close', function (err) {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log('Media saved!')
+      console.log(body)
+    }
+  })
+}
+```
+
+`request(body).pipe(file).on('close'...` is what saves the file from the `file` variable which has the name passed to it `nasa.jpg` from the `getPhoto` function.
+
+Calling `getPhoto()` should now save the NASA image of the dat to the root of your project.
+
+Now we can share it on Twitter 😎
+
+Two parts to this, first save the file, this had me stumped for a bit as I have my files in a `src` folder, if you have youe bot file nested in folders then you will need to do the same with `fs.createWriteStream(...` 
+
+```javascript
+function saveFile(body, fileName) {
+  var file = fs.createWriteStream('src/'+fileName)
+  request(body).pipe(file).on('close', function (err) {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log('Media saved!')
+      var descriptionText = body.title
+      uploadMedia(descriptionText, fileName)
+    }
+  })
+}
+```
+
+Then `uploadMedia` to upload media to Twitter before we can post it:
+
+```javascript
+function uploadMedia(descriptionText, fileName) {
+  var filePath = path.resolve(__dirname + '/' + fileName)
+  console.log('file PATH ' + filePath)
+  bot.postMediaChunked({
+    file_path: filePath
+  }, function (err, data, respone) {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log(data)
+      var params = {
+        status: descriptionText,
+        media_ids: data.media_id_string
+      }
+      postStatus(params)
+    }
+  })
+}
+```
+
+Then with the `params` we got from `uploadMedia` we can post with a straightforward `.post('statuses/update'...` 
+
+```javascript
+function postStatus(params) {
+  bot.post('statuses/update', params, function (err, data, respone) {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log('Status posted!')
+    }
+  })
+}
+```
+
+Call the `getPhoto()` function top post to Twitter... super straight forward, right 😀 no, I know it wasn't. Heres the complete module:
+
+```javascript
+var Twit = require('twit')
+var request = require('request')
+var fs = require('fs')
+var config = require('./config')
+var path = require('path')
+
+var bot = new Twit(config)
+
+function getPhoto() {
+  var parameters = {
+    url: 'https://api.nasa.gov/planetary/apod',
+    qs: {
+      api_key: process.env.NASA_KEY
+    },
+    encoding: 'binary'
+  }
+  request.get(parameters, function (err, respone, body) {
+    body = JSON.parse(body)
+    saveFile(body, 'nasa.jpg')
+  })
+}
+
+function saveFile(body, fileName) {
+  var file = fs.createWriteStream('src/'+fileName)
+  request(body).pipe(file).on('close', function (err) {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log('Media saved!')
+      var descriptionText = body.title
+      uploadMedia(descriptionText, fileName)
+    }
+  })
+}
+
+function uploadMedia(descriptionText, fileName) {
+  var filePath = path.resolve(__dirname + '/' + fileName)
+  console.log('file PATH ' + filePath)
+  bot.postMediaChunked({
+    file_path: filePath
+  }, function (err, data, respone) {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log(data)
+      var params = {
+        status: descriptionText,
+        media_ids: data.media_id_string
+      }
+      postStatus(params)
+    }
+  })
+}
+
+function postStatus(params) {
+  bot.post('statuses/update', params, function (err, data, respone) {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log('Status posted!')
+    }
+  })
+}
+
+getPhoto()
+```
+
+
+
+[egghead-media-files]: https://egghead.io/lessons/node-js-tweet-media-files-with-twit-js
+[hannah-davis]: https://egghead.io/instructors/hannah-davis
+[nasa-iotd]: https://www.nasa.gov/multimedia/imagegallery/iotd.html
+[api-apply]: https://api.nasa.gov/index.html#apply-for-an-api-key
 

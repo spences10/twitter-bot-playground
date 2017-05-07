@@ -1,32 +1,65 @@
 var Twit = require('twit')
+var request = require('request')
+var fs = require('fs')
 var config = require('./config')
+var path = require('path')
 
 var bot = new Twit(config)
 
+function getPhoto() {
+  var parameters = {
+    url: 'https://api.nasa.gov/planetary/apod',
+    qs: {
+      api_key: process.env.NASA_KEY
+    },
+    encoding: 'binary'
+  }
+  request.get(parameters, function (err, respone, body) {
+    body = JSON.parse(body)
+    saveFile(body, 'nasa.jpg')
+  })
+}
 
-function getBotTimeline() {
-  bot.get('statuses/home_timeline', {
-    count: 5
-  }, function (err, data, response) {
+function saveFile(body, fileName) {
+  var file = fs.createWriteStream('src/'+fileName)
+  request(body).pipe(file).on('close', function (err) {
     if (err) {
       console.log(err)
     } else {
-      data.forEach(function (t) {
-        console.log(t.text)
-        console.log(t.user.screen_name)
-        console.log(t.id_str)
-        console.log('\n')
-      })
+      console.log('Media saved!')
+      var descriptionText = body.title
+      uploadMedia(descriptionText, fileName)
     }
   })
 }
 
-// getBotTimeline()
+function uploadMedia(descriptionText, fileName) {
+  var filePath = path.resolve(__dirname + '/' + fileName)
+  console.log('file PATH ' + filePath)
+  bot.postMediaChunked({
+    file_path: filePath
+  }, function (err, data, respone) {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log(data)
+      var params = {
+        status: descriptionText,
+        media_ids: data.media_id_string
+      }
+      postStatus(params)
+    }
+  })
+}
 
-var stream = bot.stream('statuses/filter', {
-  follow: '4897735439'
-})
+function postStatus(params) {
+  bot.post('statuses/update', params, function (err, data, respone) {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log('Status posted!')
+    }
+  })
+}
 
-stream.on('tweet', function (t) {
-  console.log(t.text + '\n')
-})
+getPhoto()
