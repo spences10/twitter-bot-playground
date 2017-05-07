@@ -21,7 +21,7 @@ function getPhoto() {
 }
 
 function saveFile(body, fileName) {
-  var file = fs.createWriteStream('src/'+fileName)
+  var file = fs.createWriteStream(fileName)
   request(body).pipe(file).on('close', function (err) {
     if (err) {
       console.log(err)
@@ -34,7 +34,7 @@ function saveFile(body, fileName) {
 }
 
 function uploadMedia(descriptionText, fileName) {
-  var filePath = path.resolve(__dirname + '/' + fileName)
+  var filePath = path.join(__dirname, '../' + fileName)
   console.log('file PATH ' + filePath)
   bot.postMediaChunked({
     file_path: filePath
