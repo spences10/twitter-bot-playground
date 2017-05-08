@@ -20,11 +20,13 @@
 
 This is a reference for me and anyone else that's interested in Twitter bots in JavaScript.
 
-I'm using the `twit`  npm package there are others out there to use.
+I'm using the `twit` npm package there are others out there to use.
 
-So if you don't know how to use node or have your environment set up to use it take a look at the README.md on my Twitter bot bootstrap which details getting a Twitter application set up and a development environment with c9.
+So if you don't know how to use node or do not have your environment set up to use it take a look at the [README.md][twitter-bot-bootstrap-readme] on my [Twitter bot bootstrap][twitter-bot-bootstrap] which details getting a Twitter application set up and a development environment with c9.
 
-A lot of this information is already out there so this may be repeating stuff that is elsewhere I'm doing this for my learning.
+Also another great resource is [Aman Mittal's][aman-github-profile] [Awesome Twitter bots][awesome-twitter-bots] repo whic goes over setting up a basic Twitter bot.
+
+A lot of this information is already out there so this may be repeating stuff that is elsewhere I'm doing this for my own learning and hopefully other people will get something out of this.
 
 Once you have your bot set up you can use the following.
 
@@ -764,6 +766,10 @@ If you want your sentences to be closer to the input text you can increase the w
 
 [Back to top.](#twitter-bot-playground)
 
+[twitter-bot-bootstrap-readme]: https://github.com/spences10/twitter-bot-bootstrap#twitter-bot-bootstrap
+[twitter-bot-bootstrap]: https://github.com/spences10/twitter-bot-bootstrap
+[aman-github-profile]: https://github.com/amandeepmittal
+[awesome-twitter-bots]: https://github.com/amandeepmittal/awesome-twitter-bots
 [egghead-media-files]: https://egghead.io/lessons/node-js-tweet-media-files-with-twit-js
 [hannah-davis]: https://egghead.io/instructors/hannah-davis
 [nasa-iotd]: https://www.nasa.gov/multimedia/imagegallery/iotd.html
