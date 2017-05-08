@@ -532,11 +532,11 @@ Calling `getPhoto()` should now save the NASA image of the dat to the root of yo
 
 Now we can share it on Twitter 😎
 
-Two parts to this, first save the file, this had me stumped for a bit as I have my files in a `src` folder, if you have youe bot file nested in folders then you will need to do the same with `fs.createWriteStream(...` 
+Two parts to this, first save the file.
 
 ```javascript
 function saveFile(body, fileName) {
-  var file = fs.createWriteStream('src/'+fileName)
+  var file = fs.createWriteStream(fileName)
   request(body).pipe(file).on('close', function (err) {
     if (err) {
       console.log(err)
@@ -549,11 +549,21 @@ function saveFile(body, fileName) {
 }
 ```
 
-Then `uploadMedia` to upload media to Twitter before we can post it:
+Then `uploadMedia` to upload media to Twitter before we can post it, this had me stumped for a bit as I have my files in a `src` folder, if you have your bot file nested in folders then you will need to do the same if you are struggling with `file does not exist` errors:
+
+Add a requite to `path` then use `join` with the relevant relative file path.
+
+```javascript
+var path = require('path')
+...
+var filePath = path.join(__dirname, '../' + fileName)
+```
+
+Complete function here:
 
 ```javascript
 function uploadMedia(descriptionText, fileName) {
-  var filePath = path.resolve(__dirname + '/' + fileName)
+  var filePath = path.join(__dirname, '../' + fileName)
   console.log('file PATH ' + filePath)
   bot.postMediaChunked({
     file_path: filePath
@@ -572,7 +582,7 @@ function uploadMedia(descriptionText, fileName) {
 }
 ```
 
-Then with the `params` we got from `uploadMedia` we can post with a straightforward `.post('statuses/update'...` 
+Then with the `params` we created in `uploadMedia` we can post with a straightforward `.post('statuses/update'...` 
 
 ```javascript
 function postStatus(params) {
@@ -625,7 +635,7 @@ function saveFile(body, fileName) {
 }
 
 function uploadMedia(descriptionText, fileName) {
-  var filePath = path.resolve(__dirname + '/' + fileName)
+  var filePath = path.join(__dirname, '../' + fileName)
   console.log('file PATH ' + filePath)
   bot.postMediaChunked({
     file_path: filePath
@@ -723,7 +733,7 @@ var tweetData =
   }
 ```
 
-Now we can tweet this with the bot using `.post('statuses/update'...` passing in the `sentence` variable as the `status` loggin out when there is a tweet.
+Now we can tweet this with the bot using `.post('statuses/update'...` passing in the `sentence` variable as the `status` logging out when there is a tweet.
 
 ```javascript
 var tweetData =
