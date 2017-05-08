@@ -1,7 +1,7 @@
 # Twitter bot playground
 
 <details>
-  <summary>TOC</summary>
+  <summary>Click to expand TOC</summary>
 
 <!-- TOC -->
 
@@ -26,7 +26,13 @@ So if you don't know how to use node or do not have your environment set up to u
 
 Also another great resource is [Aman Mittal's][aman-github-profile] [Awesome Twitter bots][awesome-twitter-bots] repo whic goes over setting up a basic Twitter bot.
 
-A lot of this information is already out there so this may be repeating stuff that is elsewhere I'm doing this for my own learning and hopefully other people will get something out of this.
+A lot of this information is already out there I'm hoping this is all the information someone will need to get started with their own Twitter bot. I'm doing this for my own learning and hopefully other people will get something out of this as well.
+
+**TODO**
+
+- [ ] Combine all together in one bot, currently this is just examples
+- [ ] Detail `dotemv` and how to use with a `.env` file
+- [ ] Deploy to `now.sh` 👌
 
 Once you have your bot set up you can use the following.
 
