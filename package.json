@@ -12,6 +12,7 @@
     "csv-parse": "^1.2.0",
     "dotenv": "^4.0.0",
     "rita": "^1.1.63",
+    "tabletop": "^1.5.2",
     "twit": "^2.2.5",
     "unique-random-array": "^1.0.0"
   },
