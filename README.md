@@ -13,6 +13,7 @@
   - [Use Twitter Stream API](#use-twitter-stream-api)
   - [Tweet media files](#tweet-media-files)
   - [Make a Markov bot](#make-a-markov-bot)
+  - [Retrieve and Tweet data from Google sheets](#retrieve-and-tweet-data-from-google-sheets)
 
 <!-- /TOC -->
 
@@ -772,6 +773,112 @@ If you want your sentences to be closer to the input text you can increase the w
 
 [Back to top.](#twitter-bot-playground)
 
+## Retrieve and Tweet data from Google sheets
+
+If you want to tweet a list of links you can use [`tabletop`][npm-tabletop] to work though the list, in this example again from [egghead.io][egghead-tabletop] we'll go through a list of links. 
+
+So, set up the bot and require `tabletop`:
+
+```javascript
+var Twit = require('twit')
+var config = require('./config')
+var Tabletop = require('tabletop')
+
+var bot = new Twit(config)
+```
+
+On your [`Google spreadsheet`][google-sheets] you'll need to have a header defined and then add your links
+
+|links|
+|---|
+|https://www.freecodecamp.com|
+|https://github.com|
+|https://www.reddit.com|
+|https://twitter.com|
+
+Then from Google sheets select 'File'>'Publish to the web' copy the link that is generated we can use that in table top. Now init Table top with three parameters, `key:` which is the spreadsheet URL, a `callback:` function to get the data and `simpleSheet:` which is `true` if you only have one sheet, like in the example here.
+
+```javascript
+var spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1842GC9JS9qDWHc-9leZoEn9Q_-jcPUcuDvIqd_MMPZQ/pubhtml'
+
+Tabletop.init({
+  key: spreadsheetUrl,
+  callback: function (data, tabletop) {
+    console.log(data)
+  },
+  simpleSheet: true
+}) 
+```
+
+Running the bot now should give output like this:
+
+```shell
+$ node index.js
+[ { 'links-to-tweet': 'https://www.freecodecamp.com' },
+  { 'links-to-tweet': 'https://github.com' },
+  { 'links-to-tweet': 'https://www.reddit.com' },
+  { 'links-to-tweet': 'https://twitter.com' } ]
+```
+
+So now we can tweet them using `.post('statuses/update',...` with a `forEach` on the `data` that is returned in the callback:
+
+```javascript
+Tabletop.init({
+  key: spreadsheetUrl,
+  callback: function (data, tabletop) {
+    data.forEach(function (d) {
+      var status = d.links + ' a link from a Google spreadsheet'
+      bot.post('statuses/update', {
+        status: status
+      }, function (err, response, data) {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log('Post success!')
+        }
+      })
+    })
+  },
+  simpleSheet: true
+})
+```
+
+Note that `var status = d.links` is the header name we use in the Google spreadsheet, I tried using skeleton and camel case and both returned errors so I went with a single name header on the spreadsheet.
+
+The completed code here:
+
+```javascript
+var Twit = require('twit')
+var config = require('./config')
+var Tabletop = require('tabletop')
+
+var bot = new Twit(config)
+
+var spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1842GC9JS9qDWHc-9leZoEn9Q_-jcPUcuDvIqd_MMPZQ/pubhtml'
+
+Tabletop.init({
+  key: spreadsheetUrl,
+  callback: function (data, tabletop) {
+    data.forEach(function (d) {
+      var status = d.links + ' a link from a Google spreadsheet'
+      console.log(status)
+      bot.post('statuses/update', {
+        status: status
+      }, function (err, response, data) {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log('Post success!')
+        }
+      })
+    })
+  },
+  simpleSheet: true
+})
+```
+
+[Back to top.](#twitter-bot-playground)
+
 [twitter-bot-bootstrap-readme]: https://github.com/spences10/twitter-bot-bootstrap#twitter-bot-bootstrap
 [twitter-bot-bootstrap]: https://github.com/spences10/twitter-bot-bootstrap
 [aman-github-profile]: https://github.com/amandeepmittal
@@ -782,3 +889,7 @@ If you want your sentences to be closer to the input text you can increase the w
 [api-apply]: https://api.nasa.gov/index.html#apply-for-an-api-key
 [egghead-markov]: https://egghead.io/lessons/node-js-make-a-bot-that-sounds-like-you-with-rita-js?series=create-your-own-twitter-bots
 [rita-npm]: https://www.npmjs.com/package/rita
+[npm-tabletop]: https://www.npmjs.com/package/tabletop
+[egghead-tabletop]: https://egghead.io/lessons/node-js-retrieve-and-tweet-information-from-google-spreadsheets
+[google-sheets]: sheets.google.com
+
