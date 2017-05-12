@@ -6,6 +6,7 @@
 <!-- TOC -->
 
 - [Twitter bot playground](#twitter-bot-playground)
+  - [Set up the bot](#set-up-the-bot)
   - [Post Statuses](#post-statuses)
   - [Work with users](#work-with-users)
   - [Interact with tweets](#interact-with-tweets)
@@ -21,21 +22,173 @@
 
 This is a reference for me and anyone else that's interested in Twitter bots in JavaScript.
 
-I'm using the `twit` npm package there are others out there to use.
+All of the examples here use the [`npm`][npm] package [`twit`][twit].
 
-So if you don't know how to use node or do not have your environment set up to use it take a look at the [README.md][twitter-bot-bootstrap-readme] on my [Twitter bot bootstrap][twitter-bot-bootstrap] which details getting a Twitter application set up and a development environment with c9.
+We'll go through setting up a simple bot so each of these examples can be run with it.
 
-Also another great resource is [Aman Mittal's][aman-github-profile] [Awesome Twitter bots][awesome-twitter-bots] repo whic goes over setting up a basic Twitter bot.
+I'm going to assume that you have `nodejs` installed along with `npm` and that you are comfortable with the terminal.
+
+If you are not familiar node or do not have your environment set up to use it take a look at the [README.md][twitter-bot-bootstrap-readme] on my [Twitter bot bootstrap][twitter-bot-bootstrap] repo which details getting a Twitter application set up and a development environment with c9.
+
+A great resource is [Aman Mittal's][aman-github-profile] [Awesome Twitter bots][awesome-twitter-bots] repo which has resources and bot examples.
 
 A lot of this information is already out there I'm hoping this is all the information someone will need to get started with their own Twitter bot. I'm doing this for my own learning and hopefully other people will get something out of this as well.
 
 **TODO**
 
 - [ ] Combine all together in one bot, currently this is just examples
-- [ ] Detail `dotemv` and how to use with a `.env` file
+- [ ] Detail `dotenv` and how to use with a `.env` file
 - [ ] Deploy to `now.sh` 👌
 
-Once you have your bot set up you can use the following.
+## Set up the bot
+
+Before touching the terminal or writing any code we'll need to create a [Twitter app][twitter-app] to get out API keys, we'll need them all:
+
+```text
+Consumer Key (API Key)
+Consumer Secret (API Secret)
+Access Token
+Access Token Secret
+```
+
+Keep the keys somewhere safe so you can use them again when you need them, we're going to be using them in the [`.env`][dotenv] file we're going to create.
+
+We're using [`dotenv`][dotenv] so that if at some point in the future we want to add our bot to GitHub the Twitter API keys are not added to GitHub for all to see.
+
+Starting from scratch, create a new folder via the terminal and initialise the `package.json` via `npm` we'll need `twit` and `dotenv` for all these examples.
+
+I'll be using `yarn` for all these examples, you can use `npm` if you prefer.
+
+Terminal commands:
+
+```shell
+mkdir tweebot-play
+cd tweebot-play
+yarn init -y
+yarn add twit dotenv
+touch .env .gitignore index.js
+```
+
+If you take a look at the `package.json` that was created it should look something like this:
+
+```json
+{
+  "name": "tweebot-play",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Scott Spence <spences10apps@gmail.com> (https://spences10.github.io/)",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "twit": "^2.2.5"
+  }
+}
+```
+
+Add an `npm` script to the `package.json` to kick off the bot when we're testing and looking for output:
+
+```json
+  "scripts": {
+    "start": "node index.js"
+  },
+```
+
+It should look something like this now:
+
+```json
+{
+  "name": "tweebot-play",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Scott Spence <spences10apps@gmail.com> (https://spences10.github.io/)",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "twit": "^2.2.5"
+  }
+}
+```
+
+Now we can add the following pointer to the bot in `index.js`, like so:
+
+```javascript
+require('./src/bot')
+```
+
+So when we use `yarn start` to run the bot it calls the `index.js` file which runs the `bot.js` file from the `src` folder we're going to create.
+
+Now we add our API keys to the `.env` file, it should look something like this:
+
+```text
+CONSUMER_KEY=AmMSbxxxxxxxxxxNh4BcdMhxg
+CONSUMER_SECRET=eQUfMrHbtlxxxxxxxxxxkFNNj1H107xxxxxxxxxx6CZH0fjymV
+ACCESS_TOKEN=7xxxxx492-uEcacdl7HJxxxxxxxxxxecKpi90bFhdsGG2N7iII
+ACCESS_TOKEN_SECRET=77vGPTt20xxxxxxxxxxxZAU8wxxxxxxxxxx0PhOo43cGO
+```
+
+In the `.gitignore` file we need to add `.env` and `node_modules`
+
+```shell
+# Dependency directories
+node_modules
+
+# env files
+.env
+```
+
+Then init git:
+
+```shell
+git init
+```
+
+Ok, now we can start to configure the bot, we'll need a `src` folder a `bot.js` file and a `config.js` file.
+
+Terminal:
+
+```shell
+mkdir src
+cd src
+touch config.js bot.js
+```
+
+Then we can set up the bot config, open the `config.js` file and add the following:
+
+```javascript
+require('dotenv').config()
+
+module.exports = {
+  consumer_key: process.env.CONSUMER_KEY,
+  consumer_secret: process.env.CONSUMER_SECRET,
+  access_token: process.env.ACCESS_TOKEN,
+  access_token_secret: process.env.ACCESS_TOKEN_SECRET,
+}
+```
+
+Ok, that's the bot config done now we can set up the bot, each of the examples detailed here will have the same three lines of code:
+
+```javascript
+const Twit = require('twit')
+const config = require('./config')
+
+const bot = new Twit(config)
+```
+
+Ok, that's it out bot is ready to go, do a test with `yarn start` from the terminal, we should get this for output:
+
+```shell
+yarn start
+yarn start v0.23.4
+$ node index.js
+Done in 0.64s.
+```
+
+Bot is now configured and ready to go!🚀
+
+[Back to top.](#twitter-bot-playground)
 
 ## Post Statuses
 
@@ -44,11 +197,11 @@ Firstly post statuses, with `.post('statuses/update'...`
 ```javascript
 bot.post('statuses/update', {
   status: 'hello world!'
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
-    console.log(data.text + ' tweeted!')
+    console.log(`${data.text} tweeted!`)
   }
 })
 ```
@@ -57,12 +210,12 @@ bot.post('statuses/update', {
 
 ## Work with users
 
-To get a list of followers ids use `.get('followers/ids'...`
+To get a list of followers ids use `.get('followers/ids'...` 
 
 ```javascript
 bot.get('followers/ids', {
   screen_name: 'DroidScott'
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
@@ -438,7 +591,7 @@ stream.on('tweet', function (t) {
 })
 ```
 
-You can also use multiple words in the `track` parameter, tis will get you results with either `twitter` or `bot` in them.
+You can also use multiple words in the `track` parameter, tis will get you results with either `twitter` or bot in them.
 
 ```javascript
 var stream = bot.stream('statuses/filter', {
@@ -879,10 +1032,15 @@ Tabletop.init({
 
 [Back to top.](#twitter-bot-playground)
 
+<!--links-->
+[npm]: https://www.npmjs.com/
+[twut]: https://www.npmjs.com/package/twit
 [twitter-bot-bootstrap-readme]: https://github.com/spences10/twitter-bot-bootstrap#twitter-bot-bootstrap
 [twitter-bot-bootstrap]: https://github.com/spences10/twitter-bot-bootstrap
 [aman-github-profile]: https://github.com/amandeepmittal
 [awesome-twitter-bots]: https://github.com/amandeepmittal/awesome-twitter-bots
+[twitter-app]: https://apps.twitter.com/app/new
+[dotenv]: https://www.npmjs.com/package/dotenv
 [egghead-media-files]: https://egghead.io/lessons/node-js-tweet-media-files-with-twit-js
 [hannah-davis]: https://egghead.io/instructors/hannah-davis
 [nasa-iotd]: https://www.nasa.gov/multimedia/imagegallery/iotd.html
