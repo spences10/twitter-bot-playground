@@ -6,7 +6,7 @@ const path = require('path')
 
 const bot = new Twit(config)
 
-function getPhoto() {
+const getPhoto = () => {
   const parameters = {
     url: 'https://api.nasa.gov/planetary/apod',
     qs: {
@@ -62,4 +62,4 @@ function postStatus(params) {
   })
 }
 
-getPhoto()
+module.exports = getPhoto
