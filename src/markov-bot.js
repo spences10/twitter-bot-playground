@@ -1,31 +1,31 @@
-var Twit = require('twit')
-var fs = require('fs')
-var csvparse = require('csv-parse')
-var rita = require('rita')
-var config = require('./config')
-var path = require('path')
+const Twit = require('twit')
+const fs = require('fs')
+const csvparse = require('csv-parse')
+const rita = require('rita')
+const config = require('./config')
+const path = require('path')
 
-var inputText = ''
+let inputText = ''
 
-var bot = new Twit(config)
+const bot = new Twit(config)
 
-var filePath = path.join(__dirname, '../twitter-archive/tweets.csv')
+const filePath = path.join(__dirname, '../twitter-archive/tweets.csv')
 
-var tweetData =
+const tweetData =
   fs.createReadStream(filePath)
   .pipe(csvparse({
     delimiter: ','
   }))
-  .on('data', function (row) {
-    inputText = inputText + ' ' + cleanText(row[5])
+  .on('data', row => {
+    inputText = `${inputText} ${cleanText(row[5])}`
   })
-  .on('end', function () {
-    var markov = new rita.RiMarkov(10)
+  .on('end', () => {
+    const markov = new rita.RiMarkov(10)
     markov.loadText(inputText)
-    var sentence = markov.generateSentences(1)
+    const sentence = markov.generateSentences(1)
     bot.post('statuses/update', {
       status: sentence
-    }, function (err, data, response) {
+    }, (err, data, response) => {
       if (err) {
         console.log(err)
       } else {
@@ -35,10 +35,8 @@ var tweetData =
   })
 
 function hasNoStopWords(token) {
-  var stopwords = ['@', 'http', 'RT']
-  return stopwords.every(function (sw) {
-    return !token.includes(sw)
-  })
+  const stopwords = ['@', 'http', 'RT']
+  return stopwords.every(sw => !token.includes(sw))
 }
 
 function cleanText(text) {
