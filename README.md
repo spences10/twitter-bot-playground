@@ -37,7 +37,7 @@ A lot of this information is already out there I'm hoping this is all the inform
 **TODO**
 
 - [ ] Combine all together in one bot, currently this is just examples
-- [ ] Detail `dotenv` and how to use with a `.env` file
+- [x] Detail `dotenv` and how to use with a `.env` file
 - [ ] Deploy to `now.sh` 👌
 
 ## Set up the bot
@@ -192,7 +192,7 @@ Bot is now configured and ready to go!🚀
 
 ## Post Statuses
 
-Firstly post statuses, with `.post('statuses/update'...` 
+Firstly post statuses, with `.post('statuses/update'...` bot will post a hello world! status.
 
 ```javascript
 bot.post('statuses/update', {
@@ -210,11 +210,12 @@ bot.post('statuses/update', {
 
 ## Work with users
 
-To get a list of followers ids use `.get('followers/ids'...` 
+To get a list of followers ids use `.get('followers/ids'...` and include the account that you want the followers of, in this example we're using [`@DroidScott`][scottbot], you can use any account you like. We can then log them out to the console in this example.
 
 ```javascript
 bot.get('followers/ids', {
-  screen_name: 'DroidScott'
+  screen_name: 'DroidScott',
+  count: 5
 }, (err, data, response) => {
   if (err) {
     console.log(err)
@@ -224,32 +225,35 @@ bot.get('followers/ids', {
 })
 ```
 
+You can specify with the `count` parameter how many results you get up to 100 at a time.
+
 Or to get a detailed list you can use `.get('followers/list'...` 
 
-Here we print off a list of `user.screen_name`'s
+Here we print off a list of `user.screen_name`'s up to 200 per call.
 
 ```javascript
 bot.get('followers/list', {
-  screen_name: 'DroidScott'
-}, function (err, data, response) {
+  screen_name: 'DroidScott',
+  count:200
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
-    data.users.forEach(function (user) {
+    data.users.forEach(user => {
       console.log(user.screen_name)
     })
   }
 })
 ```
 
-To follow back a follower we can use `.post('friendships/create'...` here the bot following back the user `MarcGuberti`
+To follow back a follower we can use `.post('friendships/create'...` here the bot is following back the user `MarcGuberti`
 
 >A bot should only follow users that follow the bot.
 
 ```javascript
 bot.post('friendships/create', {
   screen_name: 'MarcGuberti'
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
@@ -263,7 +267,7 @@ Like with followers you can get a list of accounts that your bot is following ba
 ```javascript
 bot.get('friends/ids', {
   screen_name: 'DroidScott'
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
@@ -277,7 +281,7 @@ And also a detailed list
 ```javascript
 bot.get('friends/list', {
   screen_name: 'DroidScott'
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
@@ -286,14 +290,14 @@ bot.get('friends/list', {
 })
 ```
 
-Get friendship status this is useful for following new followers, this will give us the relation of a specific user
+Get friendship status, this is useful for following new followers, this will give us the relation of a specific user. So you can run through your followers list and follow back any users that do not have the `following` connection.
 
-Run through your followers list and follow back any users that do not have the `following` connection.
+Lets take a look at the relation between our bot and [`@ScottDevTweets`][scotttwit]
 
 ```javascript
 bot.get('friendships/lookup', {
   screen_name: 'ScottDevTweets'
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
@@ -340,7 +344,7 @@ Direct Message a user with `bot.post('direct_messages/new'...`
 bot.post('direct_messages/new', {
   screen_name: 'ScottDevTweets',
   text: 'Hello from bot!'
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
@@ -353,12 +357,12 @@ bot.post('direct_messages/new', {
 
 ## Interact with tweets
 
-To get a list of tweets in the bot time line use `.get(statuses/home_timeline'...`
+To get a list of tweets in the bots time line use `.get(statuses/home_timeline'...`
 
 ```javascript
 bot.get('statuses/home_timeline', {
   count: 1
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
@@ -372,11 +376,11 @@ To be more granular you can pull out specific information on each tweet.
 ```javascript
 bot.get('statuses/home_timeline', {
   count: 5
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
-    data.forEach(function(t){
+    data.forEach(t => {
       console.log(t.text)
       console.log(t.user.screen_name)
       console.log(t.id_str)
@@ -391,11 +395,11 @@ To retweet use `.post('statuses/retweet/:id'...` and pass in a tweet id to retwe
 ```javascript
 bot.post('statuses/retweet/:id', {
   id: '860828247944253440'
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
-    console.log(data.text + ' retweet success!')
+    console.log(`${data.text} retweet success!`)
   }
 })
 ```
@@ -405,11 +409,11 @@ To unretweet just use `.post('statuses/unretweet/:id'...`
 ```javascript
 bot.post('statuses/unretweet/:id', {
   id: '860828247944253440'
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
-    console.log(data.text + ' unretweet success!')
+    console.log(`${data.text} unretweet success!`)
   }
 })
 ```
@@ -419,11 +423,11 @@ To like a tweet use `.post('favorites/create'...`
 ```javascript
 bot.post('favorites/create', {
   id: '860897020726435840'
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
-    console.log(data.text + ' tweet liked!')
+    console.log(`${data.text} tweet liked!`)
   }
 })
 ```
@@ -433,12 +437,11 @@ To unlike a post use `.post('favorites/destroy'...`
 ```javascript
 bot.post('favorites/destroy', {
   id: '860897020726435840'
-  
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
-    console.log(data.text + ' tweet unliked!')
+    console.log(`${data.text} tweet unliked!`)
   }
 })
 ```
@@ -449,11 +452,11 @@ To reply to a tweet is much the same a posting a tweet but you need to include t
 bot.post('statuses/update', {
   status: '@ScottDevTweets I reply to you yes!',
   in_reply_to_status_id: '860900406381211649'
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
-    console.log(data.text + ' tweeted!')
+    console.log(`${data.text} tweeted!`)
   }
 })
 ```
@@ -463,11 +466,11 @@ Finally if you want to delete a tweet use `.post('statuses/destroy/:id'...` pass
 ```javascript
 bot.post('statuses/destroy/:id', {
   id: '860900437993676801'
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
-    console.log(data.text + ' tweet deleted!')
+    console.log(`${data.text} tweet deleted!`)
   }
 })
 ```
@@ -478,13 +481,13 @@ bot.post('statuses/destroy/:id', {
 
 To use search use `.get('search/tweets',...` there are quite a few search parameters for search.
 
-`q: ''` the Q is for query so to search for mango use `q: 'mango'` we can also limit the results returned with `count: n` so let limit it the count to 5 see the example:
+`q: ''` the Q is for query so to search for mango use `q: 'mango'` we can also limit the results returned with `count: n` so let's limit it the count to in the example:
 
 ```javascript
 bot.get('search/tweets', {
   q: 'mango',
   count: 5
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
@@ -499,11 +502,11 @@ Like we did with the timeline we will pull out specific items from the `data.sta
 bot.get('search/tweets', {
   q: 'mango',
   count: 5
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
-    data.statuses.forEach(function(s){
+    data.statuses.forEach(s => {
       console.log(s.text)
       console.log(s.user.screen_name)
       console.log('\n')
@@ -528,11 +531,11 @@ If you want tweets from a certain website you can specify with the `url` paramet
 bot.get('search/tweets', {
   q: 'from:@dan_abramov url:facebook filter:images since:2017-01-01',
   count: 5
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
-    data.statuses.forEach(function (s) {
+    data.statuses.forEach(s => {
       console.log(s.text)
       console.log(s.user.screen_name)
       console.log('\n')
@@ -550,11 +553,11 @@ bot.get('search/tweets', {
   q: 'bacon',
   geocode: '51.5033640,-0.1276250,1mi',
   count: 5
-}, function (err, data, response) {
+}, (err, data, response) => {
   if (err) {
     console.log(err)
   } else {
-    data.statuses.forEach(function (s) {
+    data.statuses.forEach(s => {
       console.log(s.text)
       console.log(s.user.screen_name)
       console.log('\n')
@@ -570,16 +573,16 @@ bot.get('search/tweets', {
 There are two ways to use the Stream API first there's `.stream('statuses/sample')` example:
 
 ```javascript
-var stream = bot.stream('statuses/sample')
+const stream = bot.stream('statuses/sample');
 
-stream.on('tweet', function(t) {
-  console.log(t.text + '\n')
+stream.on('tweet', t => {
+  console.log(`${t.text}\n`)
 })
 ```
 
 This will give you a random sampling of tweets.
 
-For more specific information use `.stream('statuses/filter')...` then pass some parameters, use `track:` too specify a search string:
+For more specific information use `.stream('statuses/filter')...` then pass some parameters, use `track:` to specify a search string:
 
 ```javascript
 var stream = bot.stream('statuses/filter', {
@@ -591,29 +594,29 @@ stream.on('tweet', function (t) {
 })
 ```
 
-You can also use multiple words in the `track` parameter, tis will get you results with either `twitter` or bot in them.
+You can also use multiple words in the `track` parameter, tis will get you results with either `twitter` or `bot` in them.
 
 ```javascript
-var stream = bot.stream('statuses/filter', {
+const stream = bot.stream('statuses/filter', {
   track: 'twitter, bot'
-})
+});
 
-stream.on('tweet', function (t) {
-  console.log(t.text + '\n')
+stream.on('tweet', t => {
+  console.log(`${t.text}\n`)
 })
 ```
 
-If you want both words the remove the comma `,` you can think of spaces as `AND` and commas as `OR` 
+If you want both words then remove the comma `,` you can think of spaces as `AND` and commas as `OR` 
 
 You can also use the `follow:` parameter which lets you input the ids of specific users, example:
 
 ```javascript
-var stream = bot.stream('statuses/filter', {
+const stream = bot.stream('statuses/filter', {
   follow: '4897735439'
-})
+});
 
-stream.on('tweet', function (t) {
-  console.log(t.text + '\n')
+stream.on('tweet', t => {
+  console.log(`${t.text}\n`)
 })
 ```
 
@@ -628,44 +631,53 @@ This will be a request to get the [NASA image of the day][nasa-iotd] and tweet i
 For this we will need references to `request` and `fs` for working with the file system.
 
 ```javascript
-var Twit = require('twit')
-var request = require('request')
-var fs = require('fs')
-var config = require('./config')
+const Twit = require('twit')
+const request = require('request')
+const fs = require('fs')
+const config = require('./config')
 
-var bot = new Twit(config)
+const bot = new Twit(config)
 ```
 
 First up get the photo from the NASA api, for this we will need to create a parameter object inside our `getPhoto` function that will be passed to the node HTTP client `request` for the image:
 
 ```javascript
 function getPhoto() {
-  var parameters = {
+  const parameters = {
     url: 'https://api.nasa.gov/planetary/apod',
     qs: {
       api_key: process.env.NASA_KEY
     },
     encoding: 'binary'
-  }
+  };
 }
 ```
 
 The `parameters` specify an `api_key` for this you can [apply for an API key][api-apply] or you can use the `DEMO_KEY` this API key can be used for initially exploring APIs prior to signing up, but it has much lower rate limits, so you’re encouraged to signup for your own API key.
 
-In th example you can see that I have configured my key with the rest of my `.env` variables.
+In the example you can see that I have configured my key with the rest of my `.env` variables.
+
+```text
+CONSUMER_KEY=AmMSbxxxxxxxxxxNh4BcdMhxg
+CONSUMER_SECRET=eQUfMrHbtlxxxxxxxxxxkFNNj1H107xxxxxxxxxx6CZH0fjymV
+ACCESS_TOKEN=7xxxxx492-uEcacdl7HJxxxxxxxxxxecKpi90bFhdsGG2N7iII
+ACCESS_TOKEN_SECRET=77vGPTt20xxxxxxxxxxxZAU8wxxxxxxxxxx0PhOo43cGO
+
+NASA_KEY=DEMO_KEY
+```
 
 Now to use the `request` to get the image:
 
 ```javascript
 function getPhoto() {
-  var parameters = {
+  const parameters = {
     url: 'https://api.nasa.gov/planetary/apod',
     qs: {
       api_key: process.env.NASA_KEY
     },
     encoding: 'binary'
-  }
-  request.get(parameters, function (err, respone, body) {
+  };
+  request.get(parameters, (err, respone, body) => {
     body = JSON.parse(body)
     saveFile(body, 'nasa.jpg')
   })
@@ -676,8 +688,8 @@ In the `request` we pass in our parameters and parse the body as JOSN so we can 
 
 ```javascript
 function saveFile(body, fileName) {
-  var file = fs.createWriteStream(fileName)
-  request(body).pipe(file).on('close', function (err) {
+  const file = fs.createWriteStream(fileName);
+  request(body).pipe(file).on('close', err => {
     if (err) {
       console.log(err)
     } else {
@@ -698,13 +710,13 @@ Two parts to this, first save the file.
 
 ```javascript
 function saveFile(body, fileName) {
-  var file = fs.createWriteStream(fileName)
-  request(body).pipe(file).on('close', function (err) {
+  const file = fs.createWriteStream(fileName);
+  request(body).pipe(file).on('close', err => {
     if (err) {
       console.log(err)
     } else {
       console.log('Media saved!')
-      var descriptionText = body.title
+      const descriptionText = body.title;
       uploadMedia(descriptionText, fileName)
     }
   })
@@ -716,28 +728,28 @@ Then `uploadMedia` to upload media to Twitter before we can post it, this had me
 Add a requite to `path` then use `join` with the relevant relative file path.
 
 ```javascript
-var path = require('path')
+const path = require('path')
 ...
-var filePath = path.join(__dirname, '../' + fileName)
+const filePath = path.join(__dirname, '../' + fileName)
 ```
 
 Complete function here:
 
 ```javascript
 function uploadMedia(descriptionText, fileName) {
-  var filePath = path.join(__dirname, '../' + fileName)
-  console.log('file PATH ' + filePath)
+  const filePath = path.join(__dirname, `../${fileName}`);
+  console.log(`file PATH ${filePath}`)
   bot.postMediaChunked({
     file_path: filePath
-  }, function (err, data, respone) {
+  }, (err, data, respone) => {
     if (err) {
       console.log(err)
     } else {
       console.log(data)
-      var params = {
+      const params = {
         status: descriptionText,
         media_ids: data.media_id_string
-      }
+      };
       postStatus(params)
     }
   })
@@ -748,7 +760,7 @@ Then with the `params` we created in `uploadMedia` we can post with a straightfo
 
 ```javascript
 function postStatus(params) {
-  bot.post('statuses/update', params, function (err, data, respone) {
+  bot.post('statuses/update', params, (err, data, respone) => {
     if (err) {
       console.log(err)
     } else {
@@ -760,53 +772,56 @@ function postStatus(params) {
 
 Call the `getPhoto()` function top post to Twitter... super straight forward, right 😀 no, I know it wasn't. Heres the complete module:
 
+<details>
+  <summary>Click to expand</summary>
+  
 ```javascript
-var Twit = require('twit')
-var request = require('request')
-var fs = require('fs')
-var config = require('./config')
-var path = require('path')
+const Twit = require('twit')
+const request = require('request')
+const fs = require('fs')
+const config = require('./config')
+const path = require('path')
 
-var bot = new Twit(config)
+const bot = new Twit(config)
 
 function getPhoto() {
-  var parameters = {
+  const parameters = {
     url: 'https://api.nasa.gov/planetary/apod',
     qs: {
       api_key: process.env.NASA_KEY
     },
     encoding: 'binary'
   }
-  request.get(parameters, function (err, respone, body) {
+  request.get(parameters, (err, respone, body) => {
     body = JSON.parse(body)
     saveFile(body, 'nasa.jpg')
   })
 }
 
 function saveFile(body, fileName) {
-  var file = fs.createWriteStream('src/'+fileName)
-  request(body).pipe(file).on('close', function (err) {
+  const file = fs.createWriteStream(fileName)
+  request(body).pipe(file).on('close', err => {
     if (err) {
       console.log(err)
     } else {
       console.log('Media saved!')
-      var descriptionText = body.title
+      const descriptionText = body.title
       uploadMedia(descriptionText, fileName)
     }
   })
 }
 
 function uploadMedia(descriptionText, fileName) {
-  var filePath = path.join(__dirname, '../' + fileName)
-  console.log('file PATH ' + filePath)
+  const filePath = path.join(__dirname, `../${fileName}`)
+  console.log(`file PATH ${filePath}`)
   bot.postMediaChunked({
     file_path: filePath
-  }, function (err, data, respone) {
+  }, (err, data, respone) => {
     if (err) {
       console.log(err)
     } else {
       console.log(data)
-      var params = {
+      const params = {
         status: descriptionText,
         media_ids: data.media_id_string
       }
@@ -816,7 +831,7 @@ function uploadMedia(descriptionText, fileName) {
 }
 
 function postStatus(params) {
-  bot.post('statuses/update', params, function (err, data, respone) {
+  bot.post('statuses/update', params, (err, data, respone) => {
     if (err) {
       console.log(err)
     } else {
@@ -827,26 +842,33 @@ function postStatus(params) {
 
 getPhoto()
 ```
+</details>
 
 [Back to top.](#twitter-bot-playground)
 
 ## Make a Markov bot
 
-This is pretty neat, again from the [egghead.io][egghead-markov] series it uses [`rita`][rita-npm] natural language toolkit. It also uses `csv-parse` as we're going to be reading out Twitter archive to make the bot sound like me tweeting.
+This is pretty neat, again from the [egghead.io][egghead-markov] series it uses [`rita`][rita-npm] natural language toolkit. It also uses `csv-parse` as we're going to be reading out our Twitter archive to make the bot sound like us tweeting.
 
-First of all set up the Twitter archive, you'll need to request yours from the Twitter settings page for yours.
+First of all, to set up the [Twitter archive][tweet-archive], you'll need to request your data from the Twitter settings page. You'll be emailed a link to download your archive, then when you have downloaded the archive extract out the `tweets.csv` file, we'll then put that in it's own folder, so from the root of your project:
+
+```shell
+mkdir twitter-archive
+```
+
+We'll move our `tweets.csv` there to be accessed by the bot we're going to go over now.
 
 Use `fs` to set up a read stream...
 
 ```javascript
-var filePath = path.join(__dirname, '../twitter-archive/tweets.csv')
+const filePath = path.join(__dirname, '../twitter-archive/tweets.csv')
 
-var tweetData =
+const tweetData =
   fs.createReadStream(filePath)
   .pipe(csvparse({
     delimiter: ','
   }))
-  .on('data', function (row) {
+  .on('data', row => {
     console.log(row[5])
   })
 ```
@@ -870,49 +892,47 @@ The tokenized text can then be fed into the `hasNoStopWords` function to be sani
 
 ```javascript
 function hasNoStopWords(token) {
-  var stopwords = ['@', 'http', 'RT']
-  return stopwords.every(function(sw){
-    return !token.includes(sw)
-  })
+  const stopwords = ['@', 'http', 'RT'];
+  return stopwords.every(sw => !token.includes(sw))
 }
 ```
 
 Now that we have the data cleaned we can tweet it, so replace `console.log(row[5])` with `inputText = inputText + ' ' + cleanText(row[5])` then we can use `rita.RiMarkov(3)` the 3 being the number of words to take into consideration. Then use `markov.generateSentences(1)` with 1 being the number of sentences being generated.
 
 ```javascript
-var tweetData =
+const tweetData =
   fs.createReadStream(filePath)
   .pipe(csvparse({
     delimiter: ','
   }))
   .on('data', function (row) {
-    inputText = inputText + ' ' + cleanText(row[5])
+    inputText = `${inputText} ${cleanText(row[5])}`
   })
   .on('end', function(){
-    var markov = new rita.RiMarkov(3)
+    const markov = new rita.RiMarkov(3)
     markov.loadText(inputText)
-    var sentence = markov.generateSentences(1)
+    const sentence = markov.generateSentences(1)
   }
 ```
 
 Now we can tweet this with the bot using `.post('statuses/update'...` passing in the `sentence` variable as the `status` logging out when there is a tweet.
 
 ```javascript
-var tweetData =
+const tweetData =
   fs.createReadStream(filePath)
   .pipe(csvparse({
     delimiter: ','
   }))
-  .on('data', function (row) {
-    inputText = inputText + ' ' + cleanText(row[5])
+  .on('data', row => {
+    inputText = `${inputText} ${cleanText(row[5])}`
   })
-  .on('end', function () {
-    var markov = new rita.RiMarkov(3)
+  .on('end', () => {
+    const markov = new rita.RiMarkov(3);
     markov.loadText(inputText)
-    var sentence = markov.generateSentences(1)
+    const sentence = markov.generateSentences(1)
     bot.post('statuses/update', {
       status: sentence
-    }, function (err, data, response) {
+    }, (err, data, response) => {
       if (err) {
         console.log(err)
       } else {
@@ -924,6 +944,63 @@ var tweetData =
 
 If you want your sentences to be closer to the input text you can increase the words to consider in `rita.RiMarkov(6)` and if you want to make it gibberish then lower the number.
 
+Here's the completed module:
+
+<details>
+  <summary>Click to expand</summary>
+
+```javascript
+const Twit = require('twit')
+const fs = require('fs')
+const csvparse = require('csv-parse')
+const rita = require('rita')
+const config = require('./config')
+const path = require('path')
+
+let inputText = ''
+
+const bot = new Twit(config)
+
+const filePath = path.join(__dirname, '../twitter-archive/tweets.csv')
+
+const tweetData =
+  fs.createReadStream(filePath)
+  .pipe(csvparse({
+    delimiter: ','
+  }))
+  .on('data', row => {
+    inputText = `${inputText} ${cleanText(row[5])}`
+  })
+  .on('end', () => {
+    const markov = new rita.RiMarkov(10)
+    markov.loadText(inputText)
+    const sentence = markov.generateSentences(1)
+    bot.post('statuses/update', {
+      status: sentence
+    }, (err, data, response) => {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log('Markov status tweeted!', sentence)
+      }
+    })
+  })
+
+function hasNoStopWords(token) {
+  const stopwords = ['@', 'http', 'RT']
+  return stopwords.every(sw => !token.includes(sw))
+}
+
+function cleanText(text) {
+  return rita.RiTa.tokenize(text, ' ')
+    .filter(hasNoStopWords)
+    .join(' ')
+    .trim()
+}
+```
+
+</details>
+
 [Back to top.](#twitter-bot-playground)
 
 ## Retrieve and Tweet data from Google sheets
@@ -933,11 +1010,11 @@ If you want to tweet a list of links you can use [`tabletop`][npm-tabletop] to w
 So, set up the bot and require `tabletop`:
 
 ```javascript
-var Twit = require('twit')
-var config = require('./config')
-var Tabletop = require('tabletop')
+const Twit = require('twit')
+const config = require('./config')
+const Tabletop = require('tabletop')
 
-var bot = new Twit(config)
+const bot = new Twit(config)
 ```
 
 On your [`Google spreadsheet`][google-sheets] you'll need to have a header defined and then add your links
@@ -952,11 +1029,11 @@ On your [`Google spreadsheet`][google-sheets] you'll need to have a header defin
 Then from Google sheets select 'File'>'Publish to the web' copy the link that is generated we can use that in table top. Now init Table top with three parameters, `key:` which is the spreadsheet URL, a `callback:` function to get the data and `simpleSheet:` which is `true` if you only have one sheet, like in the example here.
 
 ```javascript
-var spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1842GC9JS9qDWHc-9leZoEn9Q_-jcPUcuDvIqd_MMPZQ/pubhtml'
+const spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1842GC9JS9qDWHc-9leZoEn9Q_-jcPUcuDvIqd_MMPZQ/pubhtml'
 
 Tabletop.init({
   key: spreadsheetUrl,
-  callback: function (data, tabletop) {
+  callback(data, tabletop) {
     console.log(data)
   },
   simpleSheet: true
@@ -967,10 +1044,10 @@ Running the bot now should give output like this:
 
 ```shell
 $ node index.js
-[ { 'links-to-tweet': 'https://www.freecodecamp.com' },
-  { 'links-to-tweet': 'https://github.com' },
-  { 'links-to-tweet': 'https://www.reddit.com' },
-  { 'links-to-tweet': 'https://twitter.com' } ]
+[ { 'links': 'https://www.freecodecamp.com' },
+  { 'links': 'https://github.com' },
+  { 'links': 'https://www.reddit.com' },
+  { 'links': 'https://twitter.com' } ]
 ```
 
 So now we can tweet them using `.post('statuses/update',...` with a `forEach` on the `data` that is returned in the callback:
@@ -978,12 +1055,12 @@ So now we can tweet them using `.post('statuses/update',...` with a `forEach` on
 ```javascript
 Tabletop.init({
   key: spreadsheetUrl,
-  callback: function (data, tabletop) {
-    data.forEach(function (d) {
-      var status = d.links + ' a link from a Google spreadsheet'
+  callback(data, tabletop) {
+    data.forEach(d => {
+      const status = `${d.links} a link from a Google spreadsheet`;
       bot.post('statuses/update', {
-        status: status
-      }, function (err, response, data) {
+        status
+      }, (err, response, data) => {
         if (err) {
           console.log(err)
         } else {
@@ -996,28 +1073,31 @@ Tabletop.init({
 })
 ```
 
-Note that `var status = d.links` is the header name we use in the Google spreadsheet, I tried using skeleton and camel case and both returned errors so I went with a single name header on the spreadsheet.
+Note that `${d.links}` is the header name we use in the Google spreadsheet, I tried using skeleton and camel case and both returned errors so I went with a single name header on the spreadsheet.
 
 The completed code here:
 
+<details>
+  <summary>Click to expand</summary>
+
 ```javascript
-var Twit = require('twit')
-var config = require('./config')
-var Tabletop = require('tabletop')
+const Twit = require('twit')
+const config = require('./config')
+const Tabletop = require('tabletop')
 
-var bot = new Twit(config)
+const bot = new Twit(config)
 
-var spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1842GC9JS9qDWHc-9leZoEn9Q_-jcPUcuDvIqd_MMPZQ/pubhtml'
+const spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1842GC9JS9qDWHc-9leZoEn9Q_-jcPUcuDvIqd_MMPZQ/pubhtml'
 
 Tabletop.init({
   key: spreadsheetUrl,
-  callback: function (data, tabletop) {
-    data.forEach(function (d) {
-      var status = d.links + ' a link from a Google spreadsheet'
+  callback(data, tabletop) {
+    data.forEach(d => {
+      const status = `${d.links} a link from a Google spreadsheet`
       console.log(status)
       bot.post('statuses/update', {
-        status: status
-      }, function (err, response, data) {
+        status
+      }, (err, response, data) => {
         if (err) {
           console.log(err)
         } else {
@@ -1029,6 +1109,8 @@ Tabletop.init({
   simpleSheet: true
 })
 ```
+
+</details>
 
 [Back to top.](#twitter-bot-playground)
 
@@ -1041,12 +1123,15 @@ Tabletop.init({
 [awesome-twitter-bots]: https://github.com/amandeepmittal/awesome-twitter-bots
 [twitter-app]: https://apps.twitter.com/app/new
 [dotenv]: https://www.npmjs.com/package/dotenv
+[scottbot]: https://twitter.com/DroidScott
+[scotttwit]: https://twitter.com/ScottDevTweets
 [egghead-media-files]: https://egghead.io/lessons/node-js-tweet-media-files-with-twit-js
 [hannah-davis]: https://egghead.io/instructors/hannah-davis
 [nasa-iotd]: https://www.nasa.gov/multimedia/imagegallery/iotd.html
 [api-apply]: https://api.nasa.gov/index.html#apply-for-an-api-key
 [egghead-markov]: https://egghead.io/lessons/node-js-make-a-bot-that-sounds-like-you-with-rita-js?series=create-your-own-twitter-bots
 [rita-npm]: https://www.npmjs.com/package/rita
+[tweet-archive]: https://support.twitter.com/articles/20170160
 [npm-tabletop]: https://www.npmjs.com/package/tabletop
 [egghead-tabletop]: https://egghead.io/lessons/node-js-retrieve-and-tweet-information-from-google-spreadsheets
 [google-sheets]: sheets.google.com
