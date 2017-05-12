@@ -41,7 +41,7 @@ A lot of this information is already out there I'm hoping this is all the inform
 
 **TODO**
 
-- [ ] Combine all together in one bot, currently this is just examples
+- [x] Combine all together in one bot, currently this is just examples
 - [x] Detail `dotenv` and how to use with a `.env` file
 - [ ] Deploy to `now.sh` 👌
 
