@@ -15,10 +15,14 @@
   - [Tweet media files](#tweet-media-files)
   - [Make a Markov bot](#make-a-markov-bot)
   - [Retrieve and Tweet data from Google sheets](#retrieve-and-tweet-data-from-google-sheets)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 <!-- /TOC -->
 
 </details>
+
+[![license][license-badge]][license-url]
 
 This is a reference for me and anyone else that's interested in Twitter bots in JavaScript.
 
@@ -1114,9 +1118,27 @@ Tabletop.init({
 
 [Back to top.](#twitter-bot-playground)
 
+## Contributing
+
+Please fork this repository and contribute back using pull requests.
+
+Any contributions, large or small, major features, bug fixes and integration tests are welcomed and appreciated but will be thoroughly reviewed and discussed.
+
+[Back to top.](#twitter-bot-playground)
+
+## License
+
+MIT License
+
+Copyright (c) 2017, Scott Spence. All rights reserved.
+
+[Back to top.](#twitter-bot-playground)
+
 <!--links-->
+[license-badge]: https://img.shields.io/github/license/mashape/apistatus.svg
+[license-url]: http://opensource.org/licenses/MIT
 [npm]: https://www.npmjs.com/
-[twut]: https://www.npmjs.com/package/twit
+[twit]: https://www.npmjs.com/package/twit
 [twitter-bot-bootstrap-readme]: https://github.com/spences10/twitter-bot-bootstrap#twitter-bot-bootstrap
 [twitter-bot-bootstrap]: https://github.com/spences10/twitter-bot-bootstrap
 [aman-github-profile]: https://github.com/amandeepmittal
