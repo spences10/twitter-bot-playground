@@ -2,7 +2,7 @@
   "name": "tweet-bot-playground",
   "version": "1.0.0",
   "description": "tweet-bot-playground",
-  "main": "bot.js",
+  "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
