@@ -6,6 +6,9 @@ const path = require('path')
 
 const bot = new Twit(config)
 
+const os = require('os')
+const tmpDir = os.tmpdir() 
+
 const getPhoto = () => {
   const parameters = {
     url: 'https://api.nasa.gov/planetary/apod',
@@ -21,8 +24,6 @@ const getPhoto = () => {
 }
 
 function saveFile(body, fileName) {
-  const os = require('os')
-  const tmpDir = os.tmpdir() 
   const filePath = path.join(tmpDir + `/${fileName}`)
   console.log(`saveFile: file PATH ${filePath}`)
   const file = fs.createWriteStream(filePath)
