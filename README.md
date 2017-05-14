@@ -23,7 +23,7 @@
 
 </details>
 
-[![license][license-badge]][license-url]
+[![license][license-badge]][license-url] [![Chat](https://badges.gitter.im/awesome-twitter-bots/Lobby.svg)][gitter-url]
 
 This is a reference for me and anyone else that's interested in Twitter bots in JavaScript.
 
@@ -47,7 +47,7 @@ A lot of this information is already out there I'm hoping this is all the inform
 
 ## Set up the bot
 
-Before touching the terminal or writing any code we'll need to create a [Twitter app][twitter-app] to get out API keys, we'll need them all:
+Before touching the terminal or writing any code we'll need to create a [Twitter app][twitter-app] to get our API keys, we'll need them all:
 
 ```text
 Consumer Key (API Key)
@@ -60,7 +60,7 @@ Keep the keys somewhere safe so you can use them again when you need them, we're
 
 We're using [`dotenv`][dotenv] so that if at some point in the future we want to add our bot to GitHub the Twitter API keys are not added to GitHub for all to see.
 
-Starting from scratch, create a new folder via the terminal and initialise the `package.json` via `npm` we'll need `twit` and `dotenv` for all these examples.
+Starting from scratch, create a new folder via the terminal and initialise the `package.json` via `npm` or `yarn` we'll need `twit` and `dotenv` for all these examples.
 
 I'll be using `yarn` for all these examples, you can use `npm` if you prefer.
 
@@ -281,7 +281,7 @@ bot.get('friends/ids', {
 })
 ```
 
-And also a detailed list
+And also a detailed list.
 
 ```javascript
 bot.get('friends/list', {
@@ -549,7 +549,7 @@ bot.get('search/tweets', {
 })
 ```
 
-Last few now, there's the `result_type` parameter that will return `recent`, `popular` or `mixed` results
+Last few now, there's the `result_type` parameter that will return `recent`, `popular` or `mixed` results.
 
 The `geocode` parameter that take the format latitude longitude then radius in miles `'51.5033640,-0.1276250,1mi'` example:
 
@@ -728,9 +728,9 @@ function saveFile(body, fileName) {
 }
 ```
 
-Then `uploadMedia` to upload media to Twitter before we can post it, this had me stumped for a bit as I have my files in a `src` folder, if you have your bot file nested in folders then you will need to do the same if you are struggling with `file does not exist` errors:
+Then `uploadMedia` to upload media to Twitter before we can post it, this had me stumped for a bit as I have my files in a `src` folder, if you have your bot files nested in folders then you will need to do the same if you are struggling with `file does not exist` errors:
 
-Add a requite to `path` then use `join` with the relevant relative file path.
+Add a `require` to `path` then use `join` with the relevant relative file path.
 
 ```javascript
 const path = require('path')
@@ -1022,7 +1022,7 @@ const Tabletop = require('tabletop')
 const bot = new Twit(config)
 ```
 
-On your [`Google spreadsheet`][google-sheets] you'll need to have a header defined and then add your links
+On your [`Google spreadsheet`][google-sheets] you'll need to have a header defined and then add your links, we'll use the following for an example:
 
 |links|
 |---|
@@ -1031,7 +1031,9 @@ On your [`Google spreadsheet`][google-sheets] you'll need to have a header defin
 |https://www.reddit.com|
 |https://twitter.com|
 
-Then from Google sheets select 'File'>'Publish to the web' copy the link that is generated we can use that in table top. Now init Table top with three parameters, `key:` which is the spreadsheet URL, a `callback:` function to get the data and `simpleSheet:` which is `true` if you only have one sheet, like in the example here.
+Now from Google sheets we can select 'File'>'Publish to the web' and copy the link that is generated we can use that in table top. 
+
+Now init Table top with three parameters, `key:` which is the spreadsheet URL, a `callback:` function to get the data and `simpleSheet:` which is `true` if you only have one sheet, like in our example here:
 
 ```javascript
 const spreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1842GC9JS9qDWHc-9leZoEn9Q_-jcPUcuDvIqd_MMPZQ/pubhtml'
@@ -1121,7 +1123,7 @@ Tabletop.init({
 
 ## Putting it all together
 
-Ok, so those examples were good n' all but we haven't really got a bot out of this hae we? I mean you run it from the terminal and that's it done, we want to be able to kick off the bot and leave it to do its thing.
+Ok, so those examples were good n' all but we haven't really got a bot out of this have we? I mean you run it from the terminal and that's it done, we want to be able to kick off the bot and leave it to do its thing.
 
 One way I have found to do this is to use `setInterval` which will kick off events from the main `bot.js` module, so lets try this:
 
@@ -1156,7 +1158,7 @@ Then at the bottom of the module add:
 module.exports = getPhoto
 ```
 
-So now we can call the `getPhoto` function from the `picture-bot.js` module in our `bot.js` module, out `bot.js` module should look something like this:
+So now we can call the `getPhoto` function from the `picture-bot.js` module in our `bot.js` module, our `bot.js` module should look something like this:
 
 
 ```javascript
@@ -1187,7 +1189,7 @@ Status posted!
 Done in 9.89s.
 ```
 
-Ok, so thats the picture of the day done, but it has run one and completed we need to put it on an interval with `setInterval` which we need to pass two options to, the function it's going to call and the timeout value.
+Ok, so thats the picture of the day done, but it has run once and completed we need to put it on an interval with `setInterval` which we need to pass two options to, the function it's going to call and the timeout value.
 
 The picture updates every 24 hours so that will be how many milliseconds in 24 hours [8.64e+7] I don't even 🤷‍ 
 
@@ -1351,6 +1353,8 @@ Copyright (c) 2017, Scott Spence. All rights reserved.
 <!--links-->
 [license-badge]: https://img.shields.io/github/license/mashape/apistatus.svg
 [license-url]: http://opensource.org/licenses/MIT
+[gitter-bagde]: https://badges.gitter.im/awesome-twitter-bots/Lobby.svg
+[gitter-url]: https://gitter.im/awesome-twitter-bots/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 [npm]: https://www.npmjs.com/
 [twit]: https://www.npmjs.com/package/twit
 [twitter-bot-bootstrap-readme]: https://github.com/spences10/twitter-bot-bootstrap#twitter-bot-bootstrap
