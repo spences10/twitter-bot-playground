@@ -16,28 +16,31 @@ const getPhoto = () => {
   }
   request.get(parameters, (err, respone, body) => {
     body = JSON.parse(body)
-    saveFile(body, './src/nasa.jpg')
+    saveFile(body, 'nasa.jpg')
   })
 }
 
 function saveFile(body, fileName) {
-  const file = fs.createWriteStream(fileName)
+  const os = require('os')
+  const tmpDir = os.tmpdir() 
+  const filePath = path.join(tmpDir + `/${fileName}`)
+  console.log(`saveFile: file PATH ${filePath}`)
+  const file = fs.createWriteStream(filePath)
   request(body).pipe(file).on('close', err => {
     if (err) {
       console.log(err)
     } else {
       console.log('Media saved!')
       const descriptionText = body.title
-      uploadMedia(descriptionText, fileName)
+      uploadMedia(descriptionText, filePath)
     }
   })
 }
 
 function uploadMedia(descriptionText, fileName) {
-  const filePath = path.join(__dirname, `../${fileName}`)
-  console.log(`file PATH ${filePath}`)
+  console.log(`uploadMedia: file PATH ${fileName}`)
   bot.postMediaChunked({
-    file_path: filePath
+    file_path: fileName
   }, (err, data, respone) => {
     if (err) {
       console.log(err)

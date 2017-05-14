@@ -4,7 +4,15 @@
   "description": "tweet-bot-playground",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "deploy": "now -e CONSUMER_KEY=@ds-twit-key -e CONSUMER_SECRET=@ds-twit-secret -e ACCESS_TOKEN=@ds-twit-access  -e ACCESS_TOKEN_SECRET=@ds-twit-access-secret -e NASA_KEY=@nasa-key"
+  },
+  "now": {
+    "alias": "tweet-bot-playground",
+    "files": [
+      "src",
+      "index.js"
+    ]
   },
   "author": "Scott Spence",
   "license": "MIT",
@@ -13,8 +21,7 @@
     "dotenv": "^4.0.0",
     "rita": "^1.1.63",
     "tabletop": "^1.5.2",
-    "twit": "^2.2.5",
-    "unique-random-array": "^1.0.0"
+    "twit": "^2.2.5"
   },
   "repository": {
     "type": "git",
