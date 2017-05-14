@@ -902,7 +902,7 @@ function hasNoStopWords(token) {
 }
 ```
 
-Now that we have the data cleaned we can tweet it, so replace `console.log(row[5])` with `inputText = inputText + ' ' + cleanText(row[5])` then we can use `rita.RiMarkov(3)` the 3 being the number of words to take into consideration. Then use `markov.generateSentences(1)` with 1 being the number of sentences being generated.
+Now that we have the data cleaned we can tweet it, so replace `console.log(row[5])` with `inputText = inputText + ' ' + cleanText(row[5])` then we can use `rita.RiMarkov(3)` the 3 being the number of words to take into consideration. Then use `markov.generateSentences(1)` with 1 being the number of sentences being generated. We'll also use `.toString()` and `.substring(0, 140)` to truncate the result down to 140 characters.
 
 ```javascript
 const tweetData =
@@ -917,6 +917,8 @@ const tweetData =
     const markov = new rita.RiMarkov(3)
     markov.loadText(inputText)
     const sentence = markov.generateSentences(1)
+      .toString()
+      .substring(0, 140)
   }
 ```
 
@@ -925,26 +927,29 @@ Now we can tweet this with the bot using `.post('statuses/update'...` passing in
 ```javascript
 const tweetData =
   fs.createReadStream(filePath)
-  .pipe(csvparse({
-    delimiter: ','
-  }))
-  .on('data', row => {
-    inputText = `${inputText} ${cleanText(row[5])}`
-  })
-  .on('end', () => {
-    const markov = new rita.RiMarkov(3);
-    markov.loadText(inputText)
-    const sentence = markov.generateSentences(1)
-    bot.post('statuses/update', {
-      status: sentence
-    }, (err, data, response) => {
-      if (err) {
-        console.log(err)
-      } else {
-        console.log('Markov status tweeted!')
-      }
+    .pipe(csvparse({
+      delimiter: ','
+    }))
+    .on('data', row => {
+      inputText = `${inputText} ${cleanText(row[5])}`
     })
-  })
+    .on('end', () => {
+      const markov = new rita.RiMarkov(3)
+      markov.loadText(inputText)
+      const sentence = markov.generateSentences(1)
+        .toString()
+        .substring(0, 140)
+      bot.post('statuses/update', {
+        status: sentence
+      }, (err, data, response) => {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log('Markov status tweeted!', sentence)
+        }
+      })
+    })
+}
 ```
 
 If you want your sentences to be closer to the input text you can increase the words to consider in `rita.RiMarkov(6)` and if you want to make it gibberish then lower the number.
@@ -970,26 +975,29 @@ const filePath = path.join(__dirname, '../twitter-archive/tweets.csv')
 
 const tweetData =
   fs.createReadStream(filePath)
-  .pipe(csvparse({
-    delimiter: ','
-  }))
-  .on('data', row => {
-    inputText = `${inputText} ${cleanText(row[5])}`
-  })
-  .on('end', () => {
-    const markov = new rita.RiMarkov(10)
-    markov.loadText(inputText)
-    const sentence = markov.generateSentences(1)
-    bot.post('statuses/update', {
-      status: sentence
-    }, (err, data, response) => {
-      if (err) {
-        console.log(err)
-      } else {
-        console.log('Markov status tweeted!', sentence)
-      }
+    .pipe(csvparse({
+      delimiter: ','
+    }))
+    .on('data', row => {
+      inputText = `${inputText} ${cleanText(row[5])}`
     })
-  })
+    .on('end', () => {
+      const markov = new rita.RiMarkov(10)
+      markov.loadText(inputText)
+      const sentence = markov.generateSentences(1)
+        .toString()
+        .substring(0, 140)
+      bot.post('statuses/update', {
+        status: sentence
+      }, (err, data, response) => {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log('Markov status tweeted!', sentence)
+        }
+      })
+    })
+}
 
 function hasNoStopWords(token) {
   const stopwords = ['@', 'http', 'RT']
@@ -1225,6 +1233,8 @@ const tweetData = () => {
     .on('end', () => {
       const markov = new rita.RiMarkov(10)
       markov.loadText(inputText)
+        .toString()
+        .substring(0, 140)
       const sentence = markov.generateSentences(1)
       bot.post('statuses/update', {
         status: sentence
@@ -1266,7 +1276,7 @@ const markov = require('./markov-bot')
 picture()
 setInterval(picture, 1000 * 60 * 60 * 24)
 
-const markovInterval = Math.floor(Math.random() * 180) + 5
+const markovInterval = (Math.floor(Math.random() * 180) + 1) * 1000
 markov()
 setInterval(markov, markovInterval)
 ```
@@ -1319,7 +1329,7 @@ const link = require('./link-bot')
 picture()
 setInterval(picture, 1000 * 60 * 60 * 24)
 
-const markovInterval = Math.floor(Math.random() * 180) + 5
+const markovInterval = (Math.floor(Math.random() * 180) + 1) * 1000
 markov()
 setInterval(markov, markovInterval)
 
