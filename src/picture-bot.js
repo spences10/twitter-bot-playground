@@ -16,7 +16,7 @@ const getPhoto = () => {
   }
   request.get(parameters, (err, respone, body) => {
     body = JSON.parse(body)
-    saveFile(body, 'nasa.jpg')
+    saveFile(body, './src/nasa.jpg')
   })
 }
 

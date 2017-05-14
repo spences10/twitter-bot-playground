@@ -9,7 +9,7 @@ let inputText = ''
 
 const bot = new Twit(config)
 
-const filePath = path.join(__dirname, '../twitter-archive/tweets.csv')
+const filePath = path.join(__dirname, './twitter-archive/tweets.csv')
 
 const tweetData = () => {
   fs.createReadStream(filePath)
