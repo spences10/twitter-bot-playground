@@ -43,7 +43,7 @@ A lot of this information is already out there I'm hoping this is all the inform
 
 - [x] Combine all together in one bot, currently this is just examples
 - [x] Detail `dotenv` and how to use with a `.env` file
-- [ ] Deploy to `now.sh` 👌
+- [x] Deploy to `now.sh` 👌
 
 ## Set up the bot
 
@@ -707,7 +707,7 @@ function saveFile(body, fileName) {
 
 `request(body).pipe(file).on('close'...` is what saves the file from the `file` variable which has the name passed to it `nasa.jpg` from the `getPhoto` function.
 
-Calling `getPhoto()` should now save the NASA image of the dat to the root of your project.
+Calling `getPhoto()` should now save the NASA image of the day to the root of your project.
 
 Now we can share it on Twitter 😎
 
@@ -734,7 +734,7 @@ Add a `require` to `path` then use `join` with the relevant relative file path.
 
 ```javascript
 const path = require('path')
-...
+//...
 const filePath = path.join(__dirname, '../' + fileName)
 ```
 
@@ -742,10 +742,9 @@ Complete function here:
 
 ```javascript
 function uploadMedia(descriptionText, fileName) {
-  const filePath = path.join(__dirname, `../${fileName}`);
-  console.log(`file PATH ${filePath}`)
+  console.log(`uploadMedia: file PATH ${fileName}`)
   bot.postMediaChunked({
-    file_path: filePath
+    file_path: fileName
   }, (err, data, respone) => {
     if (err) {
       console.log(err)
@@ -754,7 +753,7 @@ function uploadMedia(descriptionText, fileName) {
       const params = {
         status: descriptionText,
         media_ids: data.media_id_string
-      };
+      }
       postStatus(params)
     }
   })
@@ -858,6 +857,7 @@ This is pretty neat, again from the [egghead.io][egghead-markov] series it uses 
 First of all, to set up the [Twitter archive][tweet-archive], you'll need to request your data from the Twitter settings page. You'll be emailed a link to download your archive, then when you have downloaded the archive extract out the `tweets.csv` file, we'll then put that in it's own folder, so from the root of your project:
 
 ```shell
+cd src
 mkdir twitter-archive
 ```
 
@@ -866,7 +866,7 @@ We'll move our `tweets.csv` there to be accessed by the bot we're going to go ov
 Use `fs` to set up a read stream...
 
 ```javascript
-const filePath = path.join(__dirname, '../twitter-archive/tweets.csv')
+const filePath = path.join(__dirname, './twitter-archive/tweets.csv')
 
 const tweetData =
   fs.createReadStream(filePath)
