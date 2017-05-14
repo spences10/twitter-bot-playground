@@ -20,9 +20,11 @@ const tweetData = () => {
       inputText = `${inputText} ${cleanText(row[5])}`
     })
     .on('end', () => {
-      const markov = new rita.RiMarkov(10)
+      const markov = new rita.RiMarkov(20)
       markov.loadText(inputText)
-      const sentence = markov.generateSentences(2)
+      const sentence = markov.generateSentences(1)
+        .toString()
+        .substring(0, 140)
       bot.post('statuses/update', {
         status: sentence
       }, (err, data, response) => {
