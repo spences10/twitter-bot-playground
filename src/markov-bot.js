@@ -22,7 +22,7 @@ const tweetData = () => {
     .on('end', () => {
       const markov = new rita.RiMarkov(10)
       markov.loadText(inputText)
-      const sentence = markov.generateSentences(1)
+      const sentence = markov.generateSentences(2)
       bot.post('statuses/update', {
         status: sentence
       }, (err, data, response) => {
