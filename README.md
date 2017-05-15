@@ -769,7 +769,7 @@ function postStatus(params) {
 }
 ```
 
-Call the `getPhoto()` function top post to Twitter... super straight forward, right 😀 no, I know it wasn't. Heres the complete module:
+Call the `getPhoto()` function top post to Twitter... super straight forward, right 😀 no, I know it wasn't. Here's the complete module:
 
 <details>
   <summary>Click to expand</summary>
@@ -1631,7 +1631,7 @@ $ now -e CONSUMER_KEY=@ds-twit-key -e CONSUMER_SECRET=@ds-twit-secret -e ACCESS_
 
 Woot! You have your bot deployed! 🙌
 
-If you click on the link produced yu will be able to inspect the bot as it is on `now` there's also a handy logs section on the page where you can check for output. 👍
+If you click on the link produced you will be able to inspect the bot as it is on `now` there's also a handy logs section on the page where you can check for output. 👍
 
 ## Contributing
 
