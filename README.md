@@ -16,7 +16,7 @@
   - [Make a Markov bot](#make-a-markov-bot)
   - [Retrieve and Tweet data from Google sheets](#retrieve-and-tweet-data-from-google-sheets)
   - [Putting it all together](#putting-it-all-together)
-  - [Deploy to `now` ▲ 👌](#deploy-to-now-▲-👌)
+  - [Deploy to `now`](#deploy-to-now)
   - [Contributing](#contributing)
   - [License](#license)
 
@@ -39,12 +39,6 @@ If you are not familiar node or do not have your environment set up to use it ta
 A great resource is [Aman Mittal's][aman-github-profile] [Awesome Twitter bots][awesome-twitter-bots] repo which has resources and bot examples.
 
 A lot of this information is already out there I'm hoping this is all the information someone will need to get started with their own Twitter bot. I'm doing this for my own learning and hopefully other people will get something out of this as well.
-
-**TODO**
-
-- [x] Combine all together in one bot, currently this is just examples
-- [x] Detail `dotenv` and how to use with a `.env` file
-- [x] Deploy to `now.sh` 👌
 
 ## Set up the bot
 
@@ -1345,7 +1339,7 @@ We can now leave the bot running to do its thing!!
 
 [Back to top.](#twitter-bot-playground)
 
-## Deploy to `now` ▲ 👌
+## Deploy to `now`
 
 Right, we have a bot that does a few things but it's on our development environment, so it can't stay there forever, well it could but it'd be pretty impcratcical. Lets put our bot on a server somewhere to do it's thing.
 
@@ -1363,7 +1357,7 @@ Ready? Lets do this! 💪
 
 **Signup and install `now-cli`**
 
-Fist up lets signup for [zeit][zeit-login] ▲ create an account and authenticate then we can install the CLI.
+Fist up lets signup for [zeit][zeit-login] ▲ create an account and authenticate, then we can install the CLI.
 
 Install `now` globally on our machine so you can use it everywhere, to install the `now-cli` from the terminal enter:
 
@@ -1377,7 +1371,7 @@ Once it's completed login with:
 now --login
 ```
 
-The first time you run now, it'll ask for your email address in order to identify you. Go to the email account to supplied when sigining up an click on the email sent to you from `now`, and you'll be logged in automatically.
+The first time you run `now`, it'll ask for your email address in order to identify you. Go to the email account to supplied when sigining up an click on the email sent to you from `now`, and you'll be logged in automatically.
 
 If you need to switch the account or re-authenticate, run the same command again.
 
@@ -1385,7 +1379,7 @@ You can always check out the [`now-cli`][now-getting-started-cli] documentation 
 
 **Add `now` settings**
 
-Ok, so that's signup and install sorted, we can now configure tha bot for deploying to `now`. First up lets add the `now` settings to our `package.json` file, I've put it in between my `npm` scripts and the author name in my `package.json`:
+Ok, so that's signup and install sorted, we can now configure the bot for deploying to `now`. First up lets add the `now` settings to our `package.json` file, I've put it in between my `npm` scripts and the author name in my `package.json`:
 
 ```json
 "scripts": {
@@ -1409,17 +1403,17 @@ The now settings `alias` is to give your deployment a shothand name over the aut
 
 All good so for?
 
-Ok, now we need to add a `.npmignore` file in the root of the project and add the following lines to it:
+Ok, now we need to add a `.npmignore` file in the root of the project and add the following line to it:
 
 ```shell
 !tweets.csv
 ```
 
-The `tweets.csv` needs to go up to the `now` server to be used by the bot but we previously included it in our `.gitignore` which is what `now` uses to build your project when it's being loaded to the server. So this means that the file isn't going to get loaded unless we add the `.npmignore` to not ignore the `tweets.csv` 😅
+The `tweets.csv` needs to go up to the `now` server to be used by the bot, but we previously included it in our `.gitignore` which is what `now` uses to build your project when it's being loaded to the server. So this means that the file isn't going to get loaded unless we add the `.npmignore` to not ignore the `tweets.csv` 😅
 
 **Add `.env` variables as secrets**
 
-Ok, our super duper secret Twitter keys will need to be stored as `secrets` in `now` this is a pretty neat feature where you can define anything as a secret and reference it as an alias with now.
+Ok, our super duper secret Twitter keys will need to be stored as `secrets` in `now` this is a pretty neat feature where you can define anything as a secret and reference it as an alias with `now`.
 
 Lets start, so the syntax is `now secrets add my-secret "my value"` so for our `.env` keys add them all in giving them a descriptive [but short!] name.
 
@@ -1441,7 +1435,7 @@ $ now secrets ls
 
 **Add npm `deploy` script**
 
-Now we have out secrets defines we can create a deployment script to deploy to `now`, so in our `package.json` lets add an additional script:
+Now we have out secrets defined we can create a deployment script to deploy to `now`, so in our `package.json` lets add an additional script:
 
 ```json
   "main": "index.js",
@@ -1476,7 +1470,9 @@ const os = require('os')
 const tmpDir = os.tmpdir() 
 ```
 
-Those two lines give us the `temp` directory of the operating system, so if like me you're on Windows it will work as well as if you are on another stsyem like a linux based system, which is what `now` is. In our `saveFile` function we're going to use `tmpDir` to save our file we've taken out the `nasa.jpg` from the `getPhoto` function as we can define that information in the `saveFile` function with a [ternary function][ternary] from the `body` being passed in, this will send a tweet with a link to the video:
+Those two lines give us the `temp` directory of the operating system, so if like me you're on Windows it will work as well as if you are on another stsyem like a linux based system, which is what `now` is. In our `saveFile` function we're going to use `tmpDir` to save our file.
+
+We've taken out the `nasa.jpg` from the `getPhoto` function as we can define that information in the `saveFile` function, the NASA potd is not just a `'jpeg` some items posted there are videos as well. We we can define the type with a [ternary function][ternary] off of the `body` being passed in, this will send a tweet with a link to the video:
 
 ```javascript
 function saveFile(body) {
@@ -1612,7 +1608,7 @@ yarn deploy v0.24.4
 $ now -e CONSUMER_KEY=@ds-twit-key -e CONSUMER_SECRET=@ds-twit-secret -e ACCESS_TOKEN=@ds-twit-access  -e ACCESS_TOKEN_SECRET=@ds-twit-access-secret -e NASA_KEY=@nasa-key
 > Deploying ~\gitrepos\tweebot-play under spences10
 > Using Node.js 7.10.0 (default)
-> Ready! https://tweet-bot-playground-rapjuiuddx.now.sh (copied to clipboard) [5s]
+> Ready! https://twee-bot-play-rapjuiuddx.now.sh (copied to clipboard) [5s]
 > Upload [====================] 100% 0.0s
 > Sync complete (1.54kB) [2s]
 > Initializing…
@@ -1634,6 +1630,8 @@ $ now -e CONSUMER_KEY=@ds-twit-key -e CONSUMER_SECRET=@ds-twit-secret -e ACCESS_
 ```
 
 Woot! You have your bot deployed! 🙌
+
+If you click on the link produced yu will be able to inspect the bot as it is on `now` there's also a handy logs section on the page where you can check for output. 👍
 
 ## Contributing
 
