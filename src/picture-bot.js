@@ -24,7 +24,9 @@ const getPhoto = () => {
 }
 
 function saveFile(body) {
-  const fileName = body.media_type === 'image/jpeg' ? 'nasa.jpg' : 'nasa.mp4';
+  console.log('BODY MEDIA TYPE: ', body.media_type)
+
+  const fileName = body.media_type === 'image' ? 'nasa.jpg' : 'nasa.mp4';
   const filePath = path.join(tmpDir + `/${fileName}`)
 
   console.log(`saveFile: file PATH ${filePath}`)
