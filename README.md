@@ -1,5 +1,7 @@
 # Twitter bot playground
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/spences10/twitter-bot-playground.svg)](https://greenkeeper.io/)
+
 <details>
   <summary>Click to expand TOC</summary>
 
