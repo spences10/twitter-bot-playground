@@ -21,7 +21,7 @@
     "dotenv": "^4.0.0",
     "rita": "^1.2.12",
     "tabletop": "^1.5.2",
-    "twit": "^2.2.5"
+    "twit": "^2.2.6"
   },
   "repository": {
     "type": "git",
