@@ -1,11 +1,11 @@
 import * as Twit from 'twit'
+import * as config from './config'
 
-const bot = new Twit({
-  consumer_key: '',
-  consumer_secret: '',
-  access_token: '',
-  access_token_secret: ''
-})
+console.log('====================')
+console.log(config)
+console.log('====================')
+
+const bot = new Twit(config.parsed)
 
 bot.post(
   'statuses/update',
