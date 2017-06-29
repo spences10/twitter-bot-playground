@@ -1,15 +1,29 @@
 {
   "name": "ts-bot",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.2.0",
+  "description": "A twitter bot that uses the npm twit module with node, written in TypeScript",
   "main": "src/index.js",
   "scripts": {
     "start": "node build/index.js"
   },
-  "keywords": [],
+  "keywords": [
+    "twitter",
+    "bot",
+    "node",
+    "typescript"
+  ],
   "author": "Scott Spence <spences10apps@gmail.com> (https://spences10.github.io/)",
   "license": "MIT",
   "dependencies": {
     "twit": "2.2.9"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spences10/twitter-bot-playground.git"
+  },
+  "bugs": {
+    "url": "https://github.com/spences10/twitter-bot-playground/issues"
+  },
+  "homepage": "https://github.com/spences10/twitter-bot-playground#readme"
 }
