@@ -2,6 +2,18 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/spences10/twitter-bot-playground.svg)](https://greenkeeper.io/) [![license][license-badge]][license-url] [![Chat](https://badges.gitter.im/awesome-twitter-bots/Lobby.svg)][gitter-url]
 
+<!-- TOC -->
+
+- [Twitter bot playground](#twitter-bot-playground)
+  - [Prerequisites](#prerequisites)
+  - [Set up TypeScript](#set-up-typescript)
+  - [Set up the Project](#set-up-the-project)
+  - [Make a basic bot](#make-a-basic-bot)
+  - [Project structure](#project-structure)
+  - [Set up the bot](#set-up-the-bot)
+
+<!-- /TOC -->
+
 A twitter bot that uses the npm twit module with node, written in TypeScript
 
 ## Prerequisites
@@ -89,7 +101,7 @@ touch index.ts
 
 In our `index.ts` add a hello world console log:
 
-```javascript
+```typescript
 console.log('Hello TypeScript!')
 ```
 
@@ -105,7 +117,7 @@ npm i twit
 
 And set up a bot with the API keys for configuration, something like this:
 
-```javascript
+```typescript
 import * as Twit from 'twit'
 
 const bot = new Twit({
@@ -148,7 +160,98 @@ This should run the script start the `index.js` file from the `build` folder wit
 
 Now we're ready to start adding more functionality 👍
 
+## Project structure
 
+Lets organise the project a bit, add a `src` folder to the project and we'll move our `index.ts` file in there, in the `src` folder we're going to create an additional two files:
+
+```shell
+touch src/bot.ts src/config.ts
+```
+
+In the `index.ts` file we're going to make a pointer to the `bot.ts` file and in the `config.ts` we're going to use a `.env` file to store out API keys.
+
+The project structure should look something like this now:
+
+```text
+├─ build
+│  └─...
+├─ node_modules
+├─ src/
+│  ├─ bot.ts
+│  ├─ config.ts
+│  └─ index.ts
+├─ .env
+├─ .gitignore
+├─ package-lock.json
+├─ package.json
+└─ tsconfig.json
+```
+
+I know I haven't gone over what the `.env` file is used for, it's is used to store environment variables and sensitive information, you will need to add your Twitter API keys in there like in this example:
+
+```shell
+CONSUMER_KEY=xxxxxxxxxxxxxxxxxxxxdMhxg
+CONSUMER_SECRET=xxxxxxxxxxxxxxxxxxxxkFNNj1H107PFv1mvWwEM6CZH0fjymV
+ACCESS_TOKEN=xxxxxxxxx-xxxxxxxxxxxxxxxxxxxxecKpi90bFhdsGG2N7iII
+ACCESS_TOKEN_SECRET=xxxxxxxxxxxxxxxxxxxxZAU8wNKAPU8Qz2c0PhOo43cGO
+```
+
+**Note** that there are no `''` around the keys or spaces for the `=` sign.
+
+The `.gitignore` should be a `node` flavoured one, you can get a version from [github/gitignore][ngign] you should add `build` in there as well 👌
+
+Now that we have moved where the `index.ts` file is we'll need to update the npm script we did earlier:
+
+```json
+  "scripts": {
+    "start": "node build/index.js"
+  },
+```
+
+## Set up the bot 
+
+Now we're going to set up the bot so that we can use it in each of the examples we're going to go through.
+
+Let's install some dependencies and types, the types are just going to be available to us in development so we'll use the `-D` flag to install them as dev dependencies :
+
+```shell
+npm i dotenv
+npm i -D @types/dotenv @types/node @types/twit
+```
+
+Ok, now to add the pointer into `index.ts` file mentioned earlier, open `index.ts` copy the code from that into `bot.ts` in `index.ts` now we just want one line of code:
+
+```javascript
+import './bot'
+```
+
+Now that we have `dotenv` installed we can use that in the `config.ts` file so that we can use configuration variables across the project, in the `config.ts` file type:
+
+```typescript
+import * as dotenv from 'dotenv'
+
+const config = dotenv.config({ path: '.env' }).parsed
+
+export = config
+``` 
+
+This will process the contents of the `.env` and assign it to `process.env` to be used in the bot, which we're going to add the `config.ts` into. 
+
+`bot.ts` should look like this now:
+
+```typescript
+import * as Twit from 'twit'
+import * as config from './config'
+
+const bot = new Twit({
+  consumer_key: config.CONSUMER_KEY,
+  consumer_secret: config.CONSUMER_SECRET,
+  access_token: config.ACCESS_TOKEN,
+  access_token_secret: config.ACCESS_TOKEN_SECRET
+})
+```
+
+Running the `npm start` script should not return any errors like when we had the API keys hardcoded into the `Twit({})` config.
 
 <!-- LINKS -->
 [license-badge]: https://img.shields.io/github/license/mashape/apistatus.svg
@@ -160,3 +263,4 @@ Now we're ready to start adding more functionality 👍
 [tsdl]: https://www.typescriptlang.org/#download-links
 [tsin5]: https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html
 [tsnst]: https://github.com/Microsoft/TypeScript-Node-Starter#typescript-node-starter
+[ngign]: https://github.com/github/gitignore/blob/master/Node.gitignore
