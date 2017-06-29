@@ -8,16 +8,17 @@ const bot = new Twit({
   access_token_secret: config.ACCESS_TOKEN_SECRET
 })
 
-bot.post(
-  'statuses/update',
+bot.get(
+  'followers/ids',
   {
-    status: 'hello world!'
+    screen_name: 'DroidScott',
+    count: 5
   },
   (err, data, response) => {
     if (err) {
       console.log(err)
     } else {
-      console.log(`${data.text} tweeted!`)
+      console.log(data)
     }
   }
 )

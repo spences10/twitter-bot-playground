@@ -2,6 +2,9 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/spences10/twitter-bot-playground.svg)](https://greenkeeper.io/) [![license][license-badge]][license-url] [![Chat](https://badges.gitter.im/awesome-twitter-bots/Lobby.svg)][gitter-url]
 
+<details>
+  <summary>Click to expand TOC</summary>
+
 <!-- TOC -->
 
 - [Twitter bot playground](#twitter-bot-playground)
@@ -11,8 +14,12 @@
   - [Make a basic bot](#make-a-basic-bot)
   - [Project structure](#project-structure)
   - [Set up the bot](#set-up-the-bot)
+  - [Post Statuses](#post-statuses)
+  - [Work with users](#work-with-users)
 
 <!-- /TOC -->
+
+</details>
 
 A twitter bot that uses the npm twit module with node, written in TypeScript
 
@@ -252,6 +259,49 @@ const bot = new Twit({
 ```
 
 Running the `npm start` script should not return any errors like when we had the API keys hardcoded into the `Twit({})` config.
+
+Bot is now configured and ready to go! 🚀
+
+## Post Statuses
+
+Firstly post statuses, with `.post('statuses/update'...` bot will post a hello world! status.
+
+```typescript
+bot.post(
+  'statuses/update',
+  {
+    status: 'hello world!'
+  },
+  (err, data, response) => {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log(`${data.text} tweeted!`)
+    }
+  }
+)
+```
+
+## Work with users
+
+To get a list of followers ids use `.get('followers/ids'...` and include the account that you want the followers of, in this example we're using [`@DroidScott`][scottbot], you can use any account you like. We can then log them out to the console in this example.
+
+```javascript
+bot.get(
+  'followers/ids',
+  {
+    screen_name: 'DroidScott',
+    count: 5
+  },
+  (err, data, response) => {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log(data)
+    }
+  }
+)
+```
 
 <!-- LINKS -->
 [license-badge]: https://img.shields.io/github/license/mashape/apistatus.svg
