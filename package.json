@@ -15,9 +15,13 @@
   "author": "Scott Spence <spences10apps@gmail.com> (https://spences10.github.io/)",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "4.0.0",
     "twit": "2.2.9"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/dotenv": "4.0.0",
+    "@types/node": "8.0.2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/spences10/twitter-bot-playground.git"
