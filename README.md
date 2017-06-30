@@ -135,7 +135,7 @@ const bot = new Twit({
 })
 ```
 
-Simple bot set up and ready to go, it does jack all right now but we'll know if we're on the right track when we try run it and get no errors! So with that in mind lets do some more configuration!! 🙃
+Simple bot set up and ready to go, it does jack all right now but we'll know if we're on the right track when we try run it and get no errors! So with that in mind lets do some more configuration!! 
 
 The code we want to run will be from the generated `build` folder so lets set up an npm script to run the `index.js` file from there, add the following script to your `package.json`:
 
@@ -165,7 +165,7 @@ npm start
 
 This should run the script start the `index.js` file from the `build` folder with no errors. 
 
-Now we're ready to start adding more functionality 👍
+Now we're ready to start adding more functionality 
 
 ## Project structure
 
@@ -205,7 +205,7 @@ ACCESS_TOKEN_SECRET=xxxxxxxxxxxxxxxxxxxxZAU8wNKAPU8Qz2c0PhOo43cGO
 
 **Note** that there are no `''` around the keys or spaces for the `=` sign.
 
-The `.gitignore` should be a `node` flavoured one, you can get a version from [github/gitignore][ngign] you should add `build` in there as well 👌
+The `.gitignore` should be a `node` flavoured one, you can get a version from [github/gitignore][ngign] you should add `build` in there as well 
 
 Now that we have moved where the `index.ts` file is we'll need to update the npm script we did earlier:
 
@@ -260,7 +260,7 @@ const bot = new Twit({
 
 Running the `npm start` script should not return any errors like when we had the API keys hardcoded into the `Twit({})` config.
 
-Bot is now configured and ready to go! 🚀
+Bot is now configured and ready to go! 
 
 ## Post Statuses
 

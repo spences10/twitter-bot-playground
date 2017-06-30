@@ -1,5 +1,5 @@
 {
-  "name": "ts-bot",
+  "name": "tweet-bot-playground",
   "version": "0.2.0",
   "description": "A twitter bot that uses the npm twit module with node, written in TypeScript",
   "main": "src/index.js",
