@@ -314,3 +314,4 @@ bot.get(
 [tsin5]: https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html
 [tsnst]: https://github.com/Microsoft/TypeScript-Node-Starter#typescript-node-starter
 [ngign]: https://github.com/github/gitignore/blob/master/Node.gitignore
+[scottbot]: https://twitter.com/DroidScott

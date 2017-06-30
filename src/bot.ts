@@ -8,11 +8,10 @@ const bot = new Twit({
   access_token_secret: config.ACCESS_TOKEN_SECRET
 })
 
-bot.get(
-  'followers/ids',
+bot.post(
+  'friendships/create',
   {
-    screen_name: 'DroidScott',
-    count: 5
+    screen_name: 'MarcGuberti'
   },
   (err, data, response) => {
     if (err) {
