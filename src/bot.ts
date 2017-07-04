@@ -1,5 +1,7 @@
 import * as Twit from 'twit'
-import * as config from './config'
+import { Config } from './config'
+
+const config: Config = new Config()
 
 const bot = new Twit({
   consumer_key: config.CONSUMER_KEY,
@@ -9,15 +11,15 @@ const bot = new Twit({
 })
 
 bot.post(
-  'friendships/create',
+  'statuses/update',
   {
-    screen_name: 'MarcGuberti'
+    status: 'hello TypeScript reposnse!'
   },
-  (err, data, response) => {
+  (err: Error, data, response) => {
     if (err) {
       console.log(err)
     } else {
-      console.log(data)
+      console.log(`${data.text} tweeted!`)
     }
   }
 )
