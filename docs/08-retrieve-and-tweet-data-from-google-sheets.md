@@ -112,3 +112,8 @@ Tabletop.init({
 [Previous: Make a Markov bot.](07-make-a-markov-bot.md#make-a-markov-bot)
 
 [Next: Putting it all together.](09-putting-it-all-together.md#putting-it-all-together)
+
+<!-- links -->
+[npm-tabletop]: https://www.npmjs.com/package/tabletop
+[egghead-tabletop]: https://egghead.io/lessons/node-js-retrieve-and-tweet-information-from-google-spreadsheets
+[google-sheets]: sheets.google.com
