@@ -164,4 +164,9 @@ function cleanText(text) {
 
 [Previous: Tweet media files.](06-tweet-media-files.md#tweet-media-files)
 
-[Next: Retrieve and tweet data from a Google sheet.](08-retrieve-and-tweet-data-from-google-sheets.md#08-retrieve-and-tweet-data-from-google-sheets)
+[Next: Retrieve and tweet data from a Google sheet.](08-retrieve-and-tweet-data-from-google-sheets.md#retrieve-and-tweet-data-from-google-sheets)
+
+<!-- links -->
+[egghead-markov]: https://egghead.io/lessons/node-js-make-a-bot-that-sounds-like-you-with-rita-js?series=create-your-own-twitter-bots
+[rita-npm]: https://www.npmjs.com/package/rita
+[tweet-archive]: https://support.twitter.com/articles/20170160

@@ -293,3 +293,14 @@ Woot! You have your bot deployed! 🙌
 If you click on the link produced you will be able to inspect the bot as it is on `now` there's also a handy logs section on the page where you can check for output. 👍
 
 [Previous: Putting it all together.](09-putting-it-all-together.md#putting-it-all-together)
+
+<!-- links -->
+[zeit-login]: https://zeit.co/login
+[now]: https://zeit.co/now
+[now-getting-started-cli]: https://zeit.co/docs/getting-started/installing-now#cli-with-npm
+[now-first-deploy]: https://zeit.co/docs/getting-started/your-first-deployments#deploying-node
+[github-issue]: https://github.com/spences10/twitter-bot-playground/issues/new
+[immutable-deployment]: https://blog.codeship.com/immutable-deployments/
+[tim]: https://github.com/timneutkens
+[ternary]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
+

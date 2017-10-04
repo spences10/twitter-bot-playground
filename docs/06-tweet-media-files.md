@@ -222,3 +222,9 @@ getPhoto()
 [Previous: Use twitter stream API.](05-use-twitter-stream-api.md#use-twitter-stream-api)
 
 [Next: Make a Markov bot.](07-make-a-markov-bot.md#make-a-markov-bot)
+
+<!-- links -->
+[egghead-media-files]: https://egghead.io/lessons/node-js-tweet-media-files-with-twit-js
+[hannah-davis]: https://egghead.io/instructors/hannah-davis
+[nasa-iotd]: https://www.nasa.gov/multimedia/imagegallery/iotd.html
+[api-apply]: https://api.nasa.gov/index.html#apply-for-an-api-key

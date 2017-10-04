@@ -89,4 +89,4 @@ bot.get('search/tweets', {
 
 [Previous: Interact with tweets.](03-interact-with-tweets.md#interact-with-tweets)
 
-[Next: Use twitter stream.](05-use-twitter-stream-api.md#use-twitter-stream-api)
+[Next: Use twitter stream API.](05-use-twitter-stream-api.md#use-twitter-stream-api)

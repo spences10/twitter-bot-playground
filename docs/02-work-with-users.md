@@ -146,3 +146,7 @@ bot.post('direct_messages/new', {
 [Previous: Post statuses.](01-post-statuses.md#post-statuses)
 
 [Next: Interact with tweets.](03-interact-with-tweets.md#interact-with-tweets)
+
+<!-- links -->
+[scottbot]: https://twitter.com/DroidScott
+[scotttwit]: https://twitter.com/ScottDevTweets

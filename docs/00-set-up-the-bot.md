@@ -148,3 +148,6 @@ Bot is now configured and ready to go!🚀
 
 [Next: Post Statuses.](01-post-statuses.md#post-statuses)
 
+<!-- links -->
+[twitter-app]: https://apps.twitter.com/app/new
+[dotenv]: https://www.npmjs.com/package/dotenv
