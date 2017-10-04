@@ -42,3 +42,6 @@ jspm_packages
 *.jpg
 
 *.csv
+
+# Book build output
+_book
