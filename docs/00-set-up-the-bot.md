@@ -146,6 +146,5 @@ Done in 0.64s.
 
 Bot is now configured and ready to go!🚀
 
-[Back to README.](00-set-up-the-bot.md#set-up-the-bot)
+[Next: Post Statuses.](01-post-statuses.md#post-statuses)
 
-[Post Statuses.](01-post-statuses.md#post-statuses)
