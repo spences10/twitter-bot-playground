@@ -229,7 +229,7 @@ bot.get('followers/ids', {
 
 You can specify with the `count` parameter how many results you get up to 100 at a time.
 
-Or to get a detailed list you can use `.get('followers/list'...` 
+Or to get a detailed list you can use `.get('followers/list'...`
 
 Here we print off a list of `user.screen_name`'s up to 200 per call.
 
@@ -406,7 +406,7 @@ bot.post('statuses/retweet/:id', {
 })
 ```
 
-To unretweet just use `.post('statuses/unretweet/:id'...` 
+To unretweet just use `.post('statuses/unretweet/:id'...`
 
 ```javascript
 bot.post('statuses/unretweet/:id', {
@@ -420,7 +420,7 @@ bot.post('statuses/unretweet/:id', {
 })
 ```
 
-To like a tweet use `.post('favorites/create'...` 
+To like a tweet use `.post('favorites/create'...`
 
 ```javascript
 bot.post('favorites/create', {
@@ -608,7 +608,7 @@ stream.on('tweet', t => {
 })
 ```
 
-If you want both words then remove the comma `,` you can think of spaces as `AND` and commas as `OR` 
+If you want both words then remove the comma `,` you can think of spaces as `AND` and commas as `OR`
 
 You can also use the `follow:` parameter which lets you input the ids of specific users, example:
 
@@ -757,7 +757,7 @@ function uploadMedia(descriptionText, fileName) {
 }
 ```
 
-Then with the `params` we created in `uploadMedia` we can post with a straightforward `.post('statuses/update'...` 
+Then with the `params` we created in `uploadMedia` we can post with a straightforward `.post('statuses/update'...`
 
 ```javascript
 function postStatus(params) {
@@ -775,7 +775,7 @@ Call the `getPhoto()` function top post to Twitter... super straight forward, ri
 
 <details>
   <summary>Click to expand</summary>
-  
+
 ```javascript
 const Twit = require('twit')
 const request = require('request')
@@ -877,7 +877,7 @@ const tweetData =
 
 When you run this from the console you should get the output from your Twitter archive.
 
-Now clear out things like `@` and `RT` to help with the natural language processing we'll set up two functions `cleanText` and `hasNoStopWords` 
+Now clear out things like `@` and `RT` to help with the natural language processing we'll set up two functions `cleanText` and `hasNoStopWords`
 
 `cleanText` will tokenize the text delimiting it on space `' '` filter out the stop words then `.join(' ')` back together with a space and `.trim()` any whitespace that may be at the start of the text.
 
@@ -1015,7 +1015,7 @@ function cleanText(text) {
 
 ## Retrieve and Tweet data from Google sheets
 
-If you want to tweet a list of links you can use [`tabletop`][npm-tabletop] to work though the list, in this example again from [egghead.io][egghead-tabletop] we'll go through a list of links. 
+If you want to tweet a list of links you can use [`tabletop`][npm-tabletop] to work though the list, in this example again from [egghead.io][egghead-tabletop] we'll go through a list of links.
 
 So, set up the bot and require `tabletop`:
 
@@ -1036,7 +1036,7 @@ On your [`Google spreadsheet`][google-sheets] you'll need to have a header defin
 |https://www.reddit.com|
 |https://twitter.com|
 
-Now from Google sheets we can select 'File'>'Publish to the web' and copy the link that is generated we can use that in table top. 
+Now from Google sheets we can select 'File'>'Publish to the web' and copy the link that is generated we can use that in table top.
 
 Now init Table top with three parameters, `key:` which is the spreadsheet URL, a `callback:` function to get the data and `simpleSheet:` which is `true` if you only have one sheet, like in our example here:
 
@@ -1049,7 +1049,7 @@ Tabletop.init({
     console.log(data)
   },
   simpleSheet: true
-}) 
+})
 ```
 
 Running the bot now should give output like this:
@@ -1196,7 +1196,7 @@ Done in 9.89s.
 
 Ok, so thats the picture of the day done, but it has run once and completed we need to put it on an interval with `setInterval` which we need to pass two options to, the function it's going to call and the timeout value.
 
-The picture updates every 24 hours so that will be how many milliseconds in 24 hours [8.64e+7] I don't even 🤷‍ 
+The picture updates every 24 hours so that will be how many milliseconds in 24 hours [8.64e+7] I don't even 🤷‍
 
 I work it out like this, 1000 * 60 = 1 minute, so 1000 * 60 * 60 * 24 so for now lets add that directly into the `setInterval` function:
 
@@ -1451,11 +1451,11 @@ Now we have out secrets defined we can create a deployment script to deploy to `
 Lets go over what we have added there, `deploy` will run the `now` command and pass it all our environment `-e` variables and the associated `secret` value, if we break it down into separate lines it will be a bit clearer:
 
 ```text
-now 
--e CONSUMER_KEY=@ds-twit-key 
--e CONSUMER_SECRET=@ds-twit-secret 
--e ACCESS_TOKEN=@ds-twit-access  
--e ACCESS_TOKEN_SECRET=@ds-twit-access-secret 
+now
+-e CONSUMER_KEY=@ds-twit-key
+-e CONSUMER_SECRET=@ds-twit-secret
+-e ACCESS_TOKEN=@ds-twit-access
+-e ACCESS_TOKEN_SECRET=@ds-twit-access-secret
 -e NASA_KEY=@nasa-key
 ```
 
@@ -1469,7 +1469,7 @@ In the `picture-bot.js` module add the following two lines to the top of the mod
 
 ```javascript
 const os = require('os')
-const tmpDir = os.tmpdir() 
+const tmpDir = os.tmpdir()
 ```
 
 Those two lines give us the `temp` directory of the operating system, so if like me you're on Windows it will work as well as if you are on another stsyem like a linux based system, which is what `now` is. In our `saveFile` function we're going to use `tmpDir` to save our file.
@@ -1508,7 +1508,7 @@ The completed code here:
 
 <details>
   <summary>Click to expand</summary>
-  
+
 ```javascript
 const Twit = require('twit')
 const request = require('request')
