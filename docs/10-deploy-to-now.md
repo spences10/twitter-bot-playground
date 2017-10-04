@@ -256,14 +256,12 @@ Ok, thats it! We're ready to deploy to `now`!🚀
 So from the terminal we call our deployment script we defined earlier:
 
 ```shell
-yarn deploy
+npm run deploy
 ```
 
 You will get some output:
 
 ```shell
-λ yarn deploy
-yarn deploy v0.24.4
 $ now -e CONSUMER_KEY=@ds-twit-key -e CONSUMER_SECRET=@ds-twit-secret -e ACCESS_TOKEN=@ds-twit-access  -e ACCESS_TOKEN_SECRET=@ds-twit-access-secret -e NASA_KEY=@nasa-key
 > Deploying ~\gitrepos\tweebot-play under spences10
 > Using Node.js 7.10.0 (default)

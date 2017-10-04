@@ -22,8 +22,8 @@ Terminal commands:
 ```shell
 mkdir tweebot-play
 cd tweebot-play
-yarn init -y
-yarn add twit dotenv
+npm init -y
+npm i twit dotenv # i is shorthand for install
 touch .env .gitignore index.js
 ```
 
@@ -34,11 +34,11 @@ If you take a look at the `package.json` that was created it should look somethi
   "name": "tweebot-play",
   "version": "1.0.0",
   "main": "index.js",
-  "author": "Scott Spence <spences10apps@gmail.com> (https://spences10.github.io/)",
+  "author": "Scott Spence <spences10apps@gmail.com> (https://blog.scottspence.me/)",
   "license": "MIT",
   "dependencies": {
     "dotenv": "^4.0.0",
-    "twit": "^2.2.5"
+    "twit": "^2.2.9"
   }
 }
 ```
@@ -61,11 +61,11 @@ It should look something like this now:
   "scripts": {
     "start": "node index.js"
   },
-  "author": "Scott Spence <spences10apps@gmail.com> (https://spences10.github.io/)",
+  "author": "Scott Spence <spences10apps@gmail.com> (https://blog.scottspence.me/)",
   "license": "MIT",
   "dependencies": {
     "dotenv": "^4.0.0",
-    "twit": "^2.2.5"
+    "twit": "^2.2.9"
   }
 }
 ```
@@ -76,7 +76,7 @@ Now we can add the following pointer to the bot in `index.js`, like so:
 require('./src/bot')
 ```
 
-So when we use `yarn start` to run the bot it calls the `index.js` file which runs the `bot.js` file from the `src` folder we're going to create.
+So when we use `npm run start` to run the bot it calls the `index.js` file which runs the `bot.js` file from the `src` folder we're going to create.
 
 Now we add our API keys to the `.env` file, it should look something like this:
 
@@ -135,11 +135,12 @@ const config = require('./config')
 const bot = new Twit(config)
 ```
 
-Ok, that's it out bot is ready to go, do a test with `yarn start` from the terminal, we should get this for output:
+Add these three lines to the `bot.js` file.
+
+Ok, that's it our bot is ready to go, do a test with `npm run start` from the terminal, we should get a similar output to this:
 
 ```shell
-yarn start
-yarn start v0.23.4
+npm start
 $ node index.js
 Done in 0.64s.
 ```

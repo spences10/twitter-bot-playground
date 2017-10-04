@@ -47,13 +47,12 @@ picture()
 That's it, two lines of code, try running that from the terminal now:
 
 ```shell
-yarn start
+npm run start
 ```
 
 We should get some output like this:
 
 ```shell
-yarn start v0.23.4
 $ node index.js
 Media saved!
 file PATH C:\Users\path\to\project\tweebot-play\nasa.jpg
