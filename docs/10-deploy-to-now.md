@@ -163,9 +163,6 @@ function saveFile(body) {
 
 The completed code here:
 
-<details>
-  <summary>Click to expand</summary>
-
 ```javascript
 const Twit = require('twit')
 const request = require('request')
@@ -249,7 +246,6 @@ function postStatus(params) {
 module.exports = getPhoto
 
 ```
-</details>
 
 Ok, thats it! We're ready to deploy to `now`!🚀
 

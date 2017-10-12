@@ -74,9 +74,6 @@ Note that `${d.links}` is the header name we use in the Google spreadsheet, I tr
 
 The completed code here:
 
-<details>
-  <summary>Click to expand</summary>
-
 ```javascript
 const Twit = require('twit')
 const config = require('./config')
@@ -106,8 +103,6 @@ Tabletop.init({
   simpleSheet: true
 })
 ```
-
-</details>
 
 [Previous: Make a Markov bot.](07-make-a-markov-bot.md#make-a-markov-bot)
 

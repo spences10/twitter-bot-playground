@@ -104,9 +104,6 @@ If you want your sentences to be closer to the input text you can increase the w
 
 Here's the completed module:
 
-<details>
-  <summary>Click to expand</summary>
-
 ```javascript
 const Twit = require('twit')
 const fs = require('fs')
@@ -159,8 +156,6 @@ function cleanText(text) {
     .trim()
 }
 ```
-
-</details>
 
 [Previous: Tweet media files.](06-tweet-media-files.md#tweet-media-files)
 

@@ -147,9 +147,6 @@ function postStatus(params) {
 
 Call the `getPhoto()` function top post to Twitter... super straight forward, right 😀 no, I know it wasn't. Here's the complete module:
 
-<details>
-  <summary>Click to expand</summary>
-
 ```javascript
 const Twit = require('twit')
 const request = require('request')
@@ -217,7 +214,6 @@ function postStatus(params) {
 
 getPhoto()
 ```
-</details>
 
 [Previous: Use twitter stream API.](05-use-twitter-stream-api.md#use-twitter-stream-api)
 
