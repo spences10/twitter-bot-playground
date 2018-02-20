@@ -4,19 +4,15 @@
 [![license][license-badge]][license-url]
 [![Chat](https://badges.gitter.im/awesome-twitter-bots/Lobby.svg)][gitter-url]
 
-This is a reference for me and anyone else that's interested in Twitter bots in JavaScript.
+This repository is a reference for anyone interested in building Twitter bots with [node.js](https://nodejs.org/en/).
 
-All of the examples here use the [`npm`][npm] package [`twit`][twit].
+I'm using the [`npm`][npm] package [`twit`][twit]. We'll start by setting up a simple bot so that each of the examples can be run with it.
 
-We'll go through setting up a simple bot so each of these examples can be run with it.
+I also assume you have node and `npm` installed, and that you are comfortable working with your terminal. 
 
-I'm going to assume that you have `nodejs` installed along with `npm` and that you are comfortable with the terminal.
+If you are unfamiliar with node, take a look at my [_Twitter bot bootstrap_][twitter-bot-bootstrap-readme] repo, which demonstrates how to create a Twitter app and set up a development environment with c9. [Aman Mittal][aman-github-profile] has also compiled an excellent [list][awesome-twitter-bots] of bot examples and other resources.
 
-If you are not familiar node or do not have your environment set up to use it take a look at the [README.md][twitter-bot-bootstrap-readme] on my [Twitter bot bootstrap][twitter-bot-bootstrap] repo which details getting a Twitter application set up and a development environment with c9.
-
-A great resource is [Aman Mittal's][aman-github-profile] [Awesome Twitter bots][awesome-twitter-bots] repo which has resources and bot examples.
-
-A lot of this information is already out there I'm hoping this is all the information someone will need to get started with their own Twitter bot. I'm doing this for my own learning and hopefully other people will get something out of this as well.
+The examples here should contain all the information one would need to get started with their own Twitter bot. I'm doing this for my own learning, and I hope others will find it useful too.
 
 ## Contents
 
