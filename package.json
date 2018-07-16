@@ -18,7 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "csv-parse": "^2.0.0",
-    "dotenv": "^5.0.0",
+    "dotenv": "^6.0.0",
     "rita": "^1.2.12",
     "tabletop": "^1.5.2",
     "twit": "^2.2.9"
